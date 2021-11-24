@@ -5,17 +5,13 @@ export const navigation = [
     icon: 'home'
   },
   {
-    text: 'Examples',
-    icon: 'folder',
-    items: [
-      {
-        text: 'Profile',
-        path: '/profile'
-      },
-      {
-        text: 'Tasks',
-        path: '/tasks'
-      }
-    ]
+    icon: 'doc',
+    text: 'Mark-Sheet',
+    path: '/mark-sheet'
+  },
+  {
+    icon: 'clock',
+    text: 'Attendance',
+    path: '/attendance'
   }
   ];

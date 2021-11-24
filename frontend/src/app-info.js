@@ -1,5 +1,5 @@
 const appInfo = {
-    title: 'Frontend'
+    title: 'School register'
 };
 export default appInfo;
 
