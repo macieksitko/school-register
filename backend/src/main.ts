@@ -2,10 +2,11 @@ import { INestApplication, Logger } from '@nestjs/common';
 import { ConfigService } from '@nestjs/config';
 import { NestFactory } from '@nestjs/core';
 import { AppModule } from './app.module';
-import { SwaggerModule, DocumentBuilder } from '@nestjs/swagger';
 import { CreateUserDto } from './users/dto/create-user.dto';
 import { User } from './users/schemas/user.schema';
 import { UsersService } from './users/users.service';
+import swaggerBoostrap from './bootstraps/swagger.bootstrap';
+import { NestExpressApplication } from '@nestjs/platform-express';
 
 async function initDatabase(app: INestApplication) {
   const logger = new Logger('DatabaseBootstrap');
@@ -32,20 +33,11 @@ async function initDatabase(app: INestApplication) {
 }
 
 async function bootstrap() {
-  const app = await NestFactory.create(AppModule);
+  const app = await NestFactory.create<NestExpressApplication>(AppModule);
   const serverPort = app.get(ConfigService).get<number>('server.port');
   app.setGlobalPrefix('/api');
 
-  /** Setup Swagger */
-  const config = new DocumentBuilder()
-    .setTitle('School registry')
-    .setDescription('School registry API description')
-    .setVersion('1.0')
-    .addTag('school-registry')
-    .build();
-
-  const document = SwaggerModule.createDocument(app, config);
-  SwaggerModule.setup('api/docs', app, document);
+  swaggerBoostrap(app);
 
   await app.listen(serverPort);
   const serverUrl = await app.getUrl();
