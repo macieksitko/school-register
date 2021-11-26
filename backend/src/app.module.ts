@@ -6,6 +6,8 @@ import { AppService } from './app.service';
 
 import { getConfig, AppConfig } from './config/configuration';
 import { UsersModule } from './users/users.module';
+import { AuthModule } from './auth/auth.module';
+import { PasswordModule } from './auth/password/password.module';
 
 @Module({
   imports: [
@@ -28,6 +30,8 @@ import { UsersModule } from './users/users.module';
       inject: [ConfigService],
     }),
     UsersModule,
+    PasswordModule,
+    AuthModule,
   ],
   controllers: [AppController],
   providers: [AppService],
