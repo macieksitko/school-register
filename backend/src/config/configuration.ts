@@ -9,6 +9,10 @@ interface AppConfig {
     password: string;
     name: string;
   };
+  jwt: {
+    secret: string;
+    expirationTime: string;
+  };
 }
 
 const getConfig = (): AppConfig => ({
@@ -21,6 +25,10 @@ const getConfig = (): AppConfig => ({
     username: process.env.DB_USERNAME || 'admin',
     password: process.env.DB_PASSWORD || 'admin',
     name: process.env.DB_NAME || 'school_register',
+  },
+  jwt: {
+    secret: process.env.JWT_SECRET || 'secret',
+    expirationTime: process.env.JWT_EXPIRATION_TIME || '1h',
   },
 });
 
