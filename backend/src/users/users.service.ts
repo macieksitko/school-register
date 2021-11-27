@@ -25,7 +25,9 @@ export class UsersService {
       creationDate: new Date(),
       createdBy: creatorId,
     };
-    const createdUser = this.userModel.create(user);
+    const createdUser = (await this.userModel.create(user)).populate(
+      'createdBy',
+    );
     return createdUser;
   }
 
