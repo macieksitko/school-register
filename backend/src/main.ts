@@ -1,4 +1,4 @@
-import { Logger } from '@nestjs/common';
+import { Logger, RequestMethod, ValidationPipe } from '@nestjs/common';
 import { ConfigService } from '@nestjs/config';
 import { NestFactory } from '@nestjs/core';
 import { AppModule } from './app.module';
@@ -10,6 +10,7 @@ async function bootstrap() {
   const app = await NestFactory.create<NestExpressApplication>(AppModule);
   const serverPort = app.get(ConfigService).get<number>('server.port');
   app.setGlobalPrefix('/api');
+  app.useGlobalPipes(new ValidationPipe());
 
   swaggerBoostrap(app);
   databaseBootstrap(app);
