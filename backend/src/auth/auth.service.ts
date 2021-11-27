@@ -24,6 +24,7 @@ export class AuthService {
 
   async login(user: any) {
     const payload = {
+      iss: 'school_register',
       username: user.username,
       sub: user._id,
       name: user.name,
