@@ -12,8 +12,10 @@ export class UsersService {
     private passwordService: PasswordService,
   ) {}
 
-  async defaultUserExists(): Promise<boolean> {
-    return this.userModel.exists({ username: 'admin' });
+  async userExists(username: string): Promise<boolean> {
+    return this.userModel.exists({
+      username,
+    });
   }
 
   async create(createUserDto: CreateUserDto): Promise<User> {

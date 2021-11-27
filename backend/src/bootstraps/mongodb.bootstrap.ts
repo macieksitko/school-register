@@ -1,5 +1,6 @@
 import { Logger } from '@nestjs/common';
 import { NestExpressApplication } from '@nestjs/platform-express';
+import { Role } from 'src/auth/roles/role.enum';
 import { CreateUserDto } from 'src/users/dto/create-user.dto';
 import { User } from 'src/users/schemas/user.schema';
 import { UsersService } from 'src/users/users.service';
@@ -9,7 +10,7 @@ export const databaseBootstrap = async (
 ): Promise<void> => {
   const logger = new Logger('DatabaseBootstrap');
   const usersService = app.get(UsersService);
-  const isDefaultUserExisting = await usersService.defaultUserExists();
+  const isDefaultUserExisting = await usersService.userExists('admin');
   if (isDefaultUserExisting) {
     logger.log(`Default 'admin' user already exists, skipping its creation`);
     return;
@@ -18,7 +19,7 @@ export const databaseBootstrap = async (
     username: 'admin',
     email: 'example@domain.com',
     password: Math.random().toString(36).slice(2),
-    role: 'admin',
+    role: Role.Admin,
     name: 'admin',
     lastName: 'admin',
   };
