@@ -10,7 +10,7 @@ export class User {
   creationDate: Date;
 
   @Prop({ required: false, type: mongoose.Schema.Types.ObjectId, ref: 'User' })
-  createdBy: User;
+  createdBy: string;
 
   @Prop({ required: true, unique: true })
   username: string;

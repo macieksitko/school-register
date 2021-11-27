@@ -18,12 +18,12 @@ export class UsersService {
     });
   }
 
-  async create(createUserDto: CreateUserDto): Promise<User> {
+  async create(createUserDto: CreateUserDto, creatorId: string): Promise<User> {
     const user: User = {
       ...createUserDto,
       password: await this.passwordService.hash(createUserDto.password),
       creationDate: new Date(),
-      createdBy: null,
+      createdBy: creatorId,
     };
     const createdUser = this.userModel.create(user);
     return createdUser;
