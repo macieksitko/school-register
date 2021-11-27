@@ -12,9 +12,9 @@ export class UsersService {
     private passwordService: PasswordService,
   ) {}
 
-  async userExists(username: string): Promise<boolean> {
+  async userExists(usernameOrEmail: string): Promise<boolean> {
     return this.userModel.exists({
-      username,
+      $or: [{ username: usernameOrEmail }, { email: usernameOrEmail }],
     });
   }
 
