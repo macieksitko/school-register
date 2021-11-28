@@ -9,7 +9,10 @@ import { databaseBootstrap } from './bootstraps/mongodb.bootstrap';
 async function bootstrap() {
   const app = await NestFactory.create<NestExpressApplication>(AppModule);
   const serverPort = app.get(ConfigService).get<number>('server.port');
-  app.setGlobalPrefix('/api');
+  app.setGlobalPrefix('api', {
+    exclude: ['/auth/login'],
+  });
+
   app.useGlobalPipes(new ValidationPipe());
 
   swaggerBoostrap(app);
