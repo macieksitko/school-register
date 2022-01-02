@@ -7,6 +7,10 @@ export default (app: NestExpressApplication) => {
     .setDescription('School Register REST API Documentation')
     .setVersion('0.0.1')
     .addTag('school_register')
+    .addBearerAuth(
+      { type: 'http', scheme: 'bearer', bearerFormat: 'JWT' },
+      'access-token',
+    )
     .build();
 
   const document = SwaggerModule.createDocument(app, config);

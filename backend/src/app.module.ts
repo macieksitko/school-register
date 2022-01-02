@@ -1,3 +1,5 @@
+import { StudentModule } from './student/student.module';
+import { TeacherModule } from './teacher/teacher.module';
 import { Logger, Module } from '@nestjs/common';
 import { ConfigModule, ConfigService } from '@nestjs/config';
 import { MongooseModule } from '@nestjs/mongoose';
@@ -14,6 +16,8 @@ import { RolesGuard } from './auth/guards/roles.guard';
 
 @Module({
   imports: [
+    StudentModule,
+    TeacherModule,
     ConfigModule.forRoot({
       load: [getConfig],
       cache: true,
