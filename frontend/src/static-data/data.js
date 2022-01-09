@@ -9,13 +9,15 @@ export const grades = [
                 // można dorzucić jeszcze nauczyciela, kategorie, czyliczyćdośredniej
                 "weight": 3,
                 "comment": "comment about grade?",
-                "date": "1964/03/16"
+                "date": "1964/03/16",
+                "teacher": "Adam Małysz"
             },
             {
                 "grade": 4.5,
-                "weight": 2,
-                "comment": "comment about grade?",
-                "date": "1968/03/16"
+                "weight": 1,
+                "comment": "commenddt about grade?",
+                "date": "1968/03/16",
+                "teacher": "Adam Małysz"
             }
         ],
         "term2Grades": [
@@ -23,7 +25,8 @@ export const grades = [
                 "grade": 5,
                 "weight": 2,
                 "comment": "comment about grade?",
-                "date": "1968/03/16"
+                "date": "1968/03/16",
+                "teacher": "Adam Małysz"
             }
         ],
         "term1Grade": 5,
@@ -34,34 +37,38 @@ export const grades = [
         "finalGrade": 5
     },
     {
-        "ID": 1,
+        "ID": 2,
         "subject": "Math",
         "term1Grades": [
             {
                 "grade": 4,
                 "weight": 3,
                 "comment": "comment about grade?",
-                "date": "1964/03/16"
+                "date": "1964/03/16",
+                "teacher": "Adam Małysz"
                 // tutaj można dorzucić jeszcze autora, kategorie, datę, czy liczyć do średniej
             },
             {
                 "grade": 5,
                 "weight": 2,
                 "comment": "comment about grade?",
-                "date": "1968/03/16"
+                "date": "1968/03/16",
+                "teacher": "Adam Małysz"
             },
             {
                 "grade": 3.75,
                 "weight": 2,
                 "comment": "comment about grade?",
-                "date": "1968/03/16"
+                "date": "1968/03/16",
+                "teacher": "Adam Małysz"
             }
             ,
             {
                 "grade": "np",
                 "weight": null,
                 "comment": "comment about grade?",
-                "date": "1968/03/16"
+                "date": "1968/03/16",
+                "teacher": "Adam Małysz"
             }
         ],
         "term2Grades": [],

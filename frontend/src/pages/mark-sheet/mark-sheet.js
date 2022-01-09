@@ -2,6 +2,7 @@ import React from 'react';
 import './mark-sheet.scss';
 import DataGrid, { Column } from 'devextreme-react/data-grid';
 import { grades } from '../../static-data/data';
+import {Button, OverlayTrigger, Tooltip} from "react-bootstrap";
 
 const columns = ['Subject', 'Term I', 'Term II', 'End of year grades'];
 
@@ -57,24 +58,50 @@ export default function MarkSheet() {
 )}
 
 function cellRenderTerm1(data) {
+    const renderTooltip = (props) => (
+        <Tooltip className="tooltiptext" id="button-tooltip" {...props}>
+            <div>Weight: {props.weight}</div>
+            <div>Date: {props.date}</div>
+            <div>Comment: {props.comment}</div>
+            <div>Teacher: {props.teacher}</div>
+        </Tooltip>
+    );
+
     return (
         <span>
             {
-                data.data.term1Grades.map(el => <div className="tooltip">{el.grade}
-                    <span className="tooltiptext">{el.weight}</span>
-                </div>)
+                data.data.term1Grades.map(el =>
+                    <OverlayTrigger
+                        placement="top"
+                        overlay={renderTooltip(el)}>
+                        <span className="tooltip" weight={el.weight}>{el.grade}</span>
+                    </OverlayTrigger>
+                )
             }
         </span>
     );
 }
 
 function cellRenderTerm2(data) {
+    const renderTooltip = (props) => (
+        <Tooltip className="tooltiptext" id="button-tooltip" {...props}>
+            <div>Weight: {props.weight}</div>
+            <div>Date: {props.date}</div>
+            <div>Comment: {props.comment}</div>
+            <div>Teacher: {props.teacher}</div>
+        </Tooltip>
+    );
+
     return (
         <span>
             {
-                data.data.term2Grades.map(el => <div className="tooltip">{el.grade}
-                    <span className="tooltiptext">{el.weight}</span>
-                </div>)
+                data.data.term2Grades.map(el =>
+                    <OverlayTrigger
+                        placement="top"
+                        overlay={renderTooltip(el)}>
+                        <span className="tooltip" weight={el.weight}>{el.grade}</span>
+                    </OverlayTrigger>
+                )
             }
         </span>
     );
