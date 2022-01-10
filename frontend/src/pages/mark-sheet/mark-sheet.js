@@ -6,6 +6,7 @@ import {
 } from "../../static-data/data";
 import MarkSheetGrid from "../../components/mark-sheet-grid/mark-sheet-grid";
 import SelectBox from "devextreme-react/select-box";
+import { Button } from "devextreme-react/button";
 import "./mark-sheet.scss";
 
 export default function MarkSheet() {
@@ -14,11 +15,15 @@ export default function MarkSheet() {
   const [selectedSubject, setSelectedSubject] = useState("");
   const [selectedStudent, setSelectedStudent] = useState("");
 
+  const allSelected = selectedStudent !== "" && selectedSubject !== "";
+
   return (
     <React.Fragment>
-      <h2 className={"content-block"}>Mark-Sheet</h2>
-      {/* <p>Select subject and student to display grades.</p> */}
-      <div style={{ display: "flex", justifyContent: "center" }}>
+      <div className="header">
+        <h2 className={"content-block"}>Mark-Sheet</h2>
+        <Button text="Add mark" disabled={!allSelected} type="normal" className="content-block" />
+      </div>
+      <div className="selectContainer">
         <SelectBox
           className="select"
           items={subjects}
@@ -27,6 +32,7 @@ export default function MarkSheet() {
           searchEnabled
         />
         <SelectBox
+          className="select"
           items={students}
           placeholder="Select student..."
           onValueChanged={({ value }) => setSelectedStudent(value)}
@@ -34,7 +40,7 @@ export default function MarkSheet() {
           disabled={selectedSubject === ""}
         />
       </div>
-      {selectedStudent !== "" && selectedSubject !== "" && <MarkSheetGrid grades={grades} />}
+      {allSelected && <MarkSheetGrid grades={grades} />}
     </React.Fragment>
   );
 }
