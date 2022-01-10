@@ -1,4 +1,4 @@
-import React, { useState, createContext, useContext, useEffect } from 'react';
+import React, { useState, createContext, useContext, useEffect } from "react";
 
 const NavigationContext = createContext({});
 const useNavigation = () => useContext(NavigationContext);
@@ -6,12 +6,7 @@ const useNavigation = () => useContext(NavigationContext);
 function NavigationProvider(props) {
   const [navigationData, setNavigationData] = useState({});
 
-  return (
-    <NavigationContext.Provider
-      value={{ navigationData, setNavigationData }}
-      {...props}
-    />
-  );
+  return <NavigationContext.Provider value={{ navigationData, setNavigationData }} {...props} />;
 }
 
 function withNavigationWatcher(Component) {
@@ -24,11 +19,7 @@ function withNavigationWatcher(Component) {
     }, [path, setNavigationData]);
 
     return React.createElement(Component, props);
-  }
+  };
 }
 
-export {
-  NavigationProvider,
-  useNavigation,
-  withNavigationWatcher
-}
+export { NavigationProvider, useNavigation, withNavigationWatcher };

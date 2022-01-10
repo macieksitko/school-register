@@ -1,28 +1,28 @@
-import { withNavigationWatcher } from './contexts/navigation';
-import {HomePage, AttendancePage, ProfilePage, MarkSheetPage} from './pages';
+import { withNavigationWatcher } from "./contexts/navigation";
+import { HomePage, AttendancePage, ProfilePage, MarkSheetPage } from "./pages";
 
 const routes = [
   {
-    path: '/attendance',
-    component: AttendancePage
+    path: "/attendance",
+    component: AttendancePage,
   },
   {
-    path: '/profile',
-    component: ProfilePage
+    path: "/profile",
+    component: ProfilePage,
   },
   {
-    path: '/mark-sheet',
-    component: MarkSheetPage
+    path: "/mark-sheet",
+    component: MarkSheetPage,
   },
   {
-    path: '/home',
-    component: HomePage
-  }
+    path: "/home",
+    component: HomePage,
+  },
 ];
 
-export default routes.map(route => {
+export default routes.map((route) => {
   return {
     ...route,
-    component: withNavigationWatcher(route.component)
+    component: withNavigationWatcher(route.component),
   };
 });

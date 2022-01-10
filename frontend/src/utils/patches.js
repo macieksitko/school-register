@@ -1,5 +1,5 @@
-import { useState, useCallback } from 'react';
-import { useScreenSize } from './media-query';
+import { useState, useCallback } from "react";
+import { useScreenSize } from "./media-query";
 
 export function useMenuPatch() {
   const { isSmall, isMedium } = useScreenSize();
@@ -12,5 +12,5 @@ export function useMenuPatch() {
     setTimeout(() => setEnabled(false));
   }, [enabled]);
 
-  return [enabled ? 'pre-init-blink-fix' : '', onMenuReady];
+  return [enabled ? "pre-init-blink-fix" : "", onMenuReady];
 }
