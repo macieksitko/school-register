@@ -7,7 +7,13 @@ const columns = ["Subject", "Term I", "Term II", "End of year grades"];
 
 export default function MarkSheetGrid({ grades }) {
   return (
-    <DataGrid dataSource={grades} keyExpr="ID" showColumnLines={true} showBorders={true}>
+    <DataGrid
+      dataSource={grades}
+      keyExpr="ID"
+      showColumnLines={true}
+      showBorders={true}
+      style={{ padding: 20 }}
+    >
       <Column dataField="subject" width={100} />
       <Column caption="Term I">
         <Column
