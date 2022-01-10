@@ -79,3 +79,55 @@ export const grades = [
     finalGrade: 5,
   },
 ];
+
+export const courses = [
+  { id: 1, name: "Klasa 3A 2016/2017", isArchived: false },
+  { id: 2, name: "Klasa 2B 2016/2017", isArchived: false },
+  { id: 3, name: "Klasa 2A 2015/2016", isArchived: true },
+];
+
+export const subjects = [
+  {
+    id: 1,
+    courseId: 1,
+    name: "Biologia",
+    teacher: "Adam Małysz",
+  },
+  {
+    id: 2,
+    courseId: 1,
+    name: "WF",
+    teacher: "Jane Ahonnen",
+  },
+  {
+    id: 3,
+    courseId: 2,
+    name: "Matematyka",
+    teacher: "Piotr Żyła",
+  },
+  {
+    id: 4,
+    courseId: 1,
+    name: "Chemia",
+    teacher: "Adam Małysz",
+  },
+];
+
+export const students = [
+  {
+    id: 1,
+    name: "Jerzy Kiler",
+  },
+  {
+    id: 2,
+    name: "Stefan Siarzewski",
+  },
+  {
+    id: 3,
+    name: "Ferdynand Lipski",
+  },
+  {
+    id: 4,
+    name: "Jerzy Ryba",
+  },
+];
