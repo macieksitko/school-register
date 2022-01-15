@@ -1,10 +1,9 @@
 import { Injectable } from '@nestjs/common';
 import { InjectModel } from '@nestjs/mongoose';
 import { Model } from 'mongoose';
-import { Teacher, TeacherDocument, User } from 'src/schemas';
-import { CreateTeacherDto } from './dto/create-teacher.dto';
-import { Request } from 'express';
+import { Student, Subject, Teacher, TeacherDocument, User } from 'src/schemas';
 import { UpdateTeacherDto } from './dto';
+import { CreateTeacherDto } from './dto/create-teacher.dto';
 
 @Injectable()
 export class TeacherService {
@@ -45,5 +44,10 @@ export class TeacherService {
 
     teacher.save();
     return teacher;
+  }
+
+  async findSubjects(teacherId: string): Promise<Subject[]> {
+    const teacher = await this.teacherModel.findById(teacherId);
+    return teacher.subjects;
   }
 }

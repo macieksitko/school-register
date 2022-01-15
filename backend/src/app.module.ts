@@ -1,5 +1,5 @@
-import { StudentModule } from './student/student.module';
-import { TeacherModule } from './teacher/teacher.module';
+import { StudentModule } from './modules/student/student.module';
+import { TeacherModule } from './modules/teacher/teacher.module';
 import { Logger, Module } from '@nestjs/common';
 import { ConfigModule, ConfigService } from '@nestjs/config';
 import { MongooseModule } from '@nestjs/mongoose';
@@ -7,17 +7,21 @@ import { AppController } from './app.controller';
 import { AppService } from './app.service';
 
 import { getConfig, AppConfig } from './config/configuration';
-import { UsersModule } from './users/users.module';
+import { UsersModule } from './modules/users/users.module';
 import { AuthModule } from './auth/auth.module';
 import { PasswordModule } from './auth/password/password.module';
 import { APP_GUARD } from '@nestjs/core';
 import { JwtAuthGuard } from './auth/guards/jwt.guard';
 import { RolesGuard } from './auth/guards/roles.guard';
+import { SubjectModule } from './modules/subject/subject.module';
+import { CourseModule } from './modules/course/course.module';
 
 @Module({
   imports: [
     StudentModule,
     TeacherModule,
+    SubjectModule,
+    CourseModule,
     ConfigModule.forRoot({
       load: [getConfig],
       cache: true,

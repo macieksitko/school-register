@@ -23,7 +23,7 @@ export class UsersService {
       ...createUserDto,
       password: await this.passwordService.hash(createUserDto.password),
       creationDate: new Date(),
-      createdBy: creatorId,
+      //createdBy: creatorId,
     };
     const createdUser = (await this.userModel.create(user)).populate(
       'createdBy',

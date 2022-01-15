@@ -3,7 +3,7 @@ https://docs.nestjs.com/controllers#controllers
 */
 
 import { Body, Controller, Get, Param, Post, Put } from '@nestjs/common';
-import { ApiHeader, ApiTags } from '@nestjs/swagger';
+import { ApiBody, ApiHeader, ApiTags } from '@nestjs/swagger';
 import { CurrentAccount } from 'src/auth/decorators/current-account.decorator';
 import { User } from 'src/schemas';
 import { CreateTeacherDto, UpdateTeacherDto } from './dto';
@@ -24,7 +24,13 @@ export class TeacherController {
     return this.teacherService.findOne(teacherId);
   }
 
+  @Get('/:teacherId/subject')
+  public async getTeacherSubjects(@Param('teacherId') teacherId: string) {
+    return this.teacherService.findSubjects(teacherId);
+  }
+
   @Post()
+  @ApiBody({ type: CreateTeacherDto })
   public async createTeacher(
     @Body() createTeacherDto: CreateTeacherDto,
     @CurrentAccount() currentAccount: User,
@@ -33,6 +39,7 @@ export class TeacherController {
   }
 
   @Put('/:teacherId')
+  @ApiBody({ type: UpdateTeacherDto })
   public async updateTeacher(
     @Param('teacherId') teacherId: string,
     @Body() updateTeacherDto: UpdateTeacherDto,

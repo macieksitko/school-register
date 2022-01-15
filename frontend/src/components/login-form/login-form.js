@@ -44,7 +44,7 @@ export default function LoginForm() {
       <Form formData={formData.current} disabled={loading}>
         <Item dataField={"email"} editorType={"dxTextBox"} editorOptions={emailEditorOptions}>
           <RequiredRule message="Email is required" />
-          <EmailRule message="Email is invalid" />
+          {/* <EmailRule message="Email is invalid" /> */}
           <Label visible={false} />
         </Item>
         <Item dataField={"password"} editorType={"dxTextBox"} editorOptions={passwordEditorOptions}>
@@ -82,6 +82,6 @@ export default function LoginForm() {
   );
 }
 
-const emailEditorOptions = { stylingMode: "filled", placeholder: "Email", mode: "email" };
+const emailEditorOptions = { stylingMode: "filled", placeholder: "Email" };
 const passwordEditorOptions = { stylingMode: "filled", placeholder: "Password", mode: "password" };
 const rememberMeEditorOptions = { text: "Remember me", elementAttr: { class: "form-text" } };

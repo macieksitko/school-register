@@ -1,9 +1,15 @@
 import defaultUser from "../utils/default-user";
+import axios from "axios";
 
 export async function signIn(email, password) {
   try {
     // Send request
-    console.log(email, password);
+    const user = {
+      usernameOrEmail: email,
+      password: password,
+    };
+
+    await axios.post("http://localhost:3000/auth/login", user);
 
     return {
       isOk: true,

@@ -1,6 +1,7 @@
 import { Prop, Schema, SchemaFactory } from '@nestjs/mongoose';
 import * as mongoose from 'mongoose';
 import { Document } from 'mongoose';
+import { Course, Teacher } from 'src/schemas';
 
 export type SubjectDocument = Subject & Document;
 @Schema()
@@ -9,10 +10,26 @@ export class Subject {
   creationDate: Date;
 
   @Prop({ required: false, type: mongoose.Schema.Types.ObjectId, ref: 'User' })
-  createdBy: string;
+  createdBy?: string;
 
   @Prop({ required: true })
   name: string;
+
+  //Relations
+
+  @Prop({
+    type: mongoose.Schema.Types.ObjectId,
+    required: false,
+    ref: 'Course',
+  })
+  course?: Course;
+
+  @Prop({
+    type: mongoose.Schema.Types.ObjectId,
+    required: false,
+    ref: 'Teacher',
+  })
+  teacher?: Teacher;
 }
 
 export const SubjectSchema = SchemaFactory.createForClass(Subject);

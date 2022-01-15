@@ -11,13 +11,13 @@ export class User {
   creationDate: Date;
 
   @Prop({ required: false, type: mongoose.Schema.Types.ObjectId, ref: 'User' })
-  createdBy: string;
+  createdBy?: string;
 
   @Prop({ required: true, unique: true })
   username: string;
 
-  @Prop({ required: true })
-  email: string;
+  @Prop({ required: false })
+  email?: string;
 
   @Prop({ required: true })
   password: string;
@@ -25,11 +25,11 @@ export class User {
   @Prop({ required: true, type: String, enum: Role })
   role: Role;
 
-  @Prop({ required: true })
-  name: string;
+  @Prop({ required: false })
+  name?: string;
 
-  @Prop({ required: true })
-  lastName: string;
+  @Prop({ required: false })
+  lastName?: string;
 }
 
 export const UserSchema = SchemaFactory.createForClass(User);

@@ -1,9 +1,9 @@
 import { Logger } from '@nestjs/common';
 import { NestExpressApplication } from '@nestjs/platform-express';
 import { Role } from 'src/auth/roles/role.enum';
-import { CreateUserDto } from 'src/users/dto/create-user.dto';
+import { CreateUserDto } from 'src/modules/users/dto/create-user.dto';
 import { User } from 'src/schemas/user.schema';
-import { UsersService } from 'src/users/users.service';
+import { UsersService } from 'src/modules/users/users.service';
 
 export const databaseBootstrap = async (
   app: NestExpressApplication,

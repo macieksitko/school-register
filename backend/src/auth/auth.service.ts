@@ -1,6 +1,7 @@
 import { Injectable, Logger } from '@nestjs/common';
 import { JwtService } from '@nestjs/jwt';
-import { UsersService } from 'src/users/users.service';
+import { LoginDto } from 'src/app.controller';
+import { UsersService } from 'src/modules/users/users.service';
 import { PasswordService } from './password/password.service';
 
 @Injectable()

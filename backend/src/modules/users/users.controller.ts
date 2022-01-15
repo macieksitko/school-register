@@ -6,7 +6,7 @@ import {
   Req,
   BadRequestException,
 } from '@nestjs/common';
-import { ApiTags } from '@nestjs/swagger';
+import { ApiBody, ApiTags } from '@nestjs/swagger';
 import { Request } from 'express';
 import { Roles } from 'src/auth/decorators/roles.decorator';
 import { Role } from 'src/auth/roles/role.enum';
@@ -19,12 +19,16 @@ export class UsersController {
   private readonly logger = new Logger(UsersController.name);
   constructor(private readonly usersService: UsersService) {}
 
-  @Roles(Role.Admin)
+  //@Roles(Role.Admin)
   @Post('create')
+  @ApiBody({ type: CreateUserDto })
   async create(@Req() req: any, @Body() createUserDto: CreateUserDto) {
+    console.log(req.user);
+
     const {
       user: { username: creator, userId: creatorId },
     } = req;
+
     const { username, role } = createUserDto;
 
     this.logger.log(

@@ -4,7 +4,15 @@ https://docs.nestjs.com/modules
 
 import { Module } from '@nestjs/common';
 import { MongooseModule } from '@nestjs/mongoose';
-import { Student, StudentSchema } from 'src/schemas';
+import {
+  MarkSchema,
+  Student,
+  StudentSchema,
+  Subject,
+  SubjectSchema,
+  Teacher,
+  TeacherSchema,
+} from 'src/schemas';
 import { StudentController } from './student.controller';
 import { StudentService } from './student.service';
 
@@ -14,6 +22,18 @@ import { StudentService } from './student.service';
       {
         name: Student.name,
         schema: StudentSchema,
+      },
+      {
+        name: Teacher.name,
+        schema: TeacherSchema,
+      },
+      {
+        name: Subject.name,
+        schema: SubjectSchema,
+      },
+      {
+        name: 'Mark',
+        schema: MarkSchema,
       },
     ]),
   ],
