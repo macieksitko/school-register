@@ -3,12 +3,13 @@ https://docs.nestjs.com/controllers#controllers
 */
 
 import { Body, Controller, Get, Param, Post, Put } from '@nestjs/common';
-import { ApiBody, ApiTags } from '@nestjs/swagger';
+import { ApiBearerAuth, ApiBody, ApiTags } from '@nestjs/swagger';
 import { CurrentAccount } from 'src/auth/decorators/current-account.decorator';
-import { User } from 'src/schemas';
+import { UserDocument } from 'src/schemas';
 import { CreateSubjectDto, UpdateSubjectDto } from './dto';
 import { SubjectService } from './subject.service';
 
+@ApiBearerAuth('access-token')
 @ApiTags('subjects')
 @Controller('subject')
 export class SubjectController {
@@ -33,7 +34,7 @@ export class SubjectController {
   @ApiBody({ type: CreateSubjectDto })
   public async createCourse(
     @Body() createSubjectDto: CreateSubjectDto,
-    @CurrentAccount() currentAccount: User,
+    @CurrentAccount() currentAccount: UserDocument,
   ) {
     return this.subjectService.create(createSubjectDto, currentAccount);
   }

@@ -1,17 +1,8 @@
-import {
-  Controller,
-  Post,
-  UseGuards,
-  Request,
-  Get,
-  Body,
-} from '@nestjs/common';
-import { ApiBody, ApiProperty } from '@nestjs/swagger';
+import { Controller, Get, Post, Request, UseGuards } from '@nestjs/common';
+import { ApiBearerAuth, ApiBody, ApiProperty } from '@nestjs/swagger';
 import { AuthService } from './auth/auth.service';
 import { Public } from './auth/decorators/public.decorator';
-import { Roles } from './auth/decorators/roles.decorator';
 import { LocalAuthGuard } from './auth/guards/local.guard';
-import { Role } from './auth/roles/role.enum';
 
 export class LoginDto {
   @ApiProperty()
@@ -21,6 +12,7 @@ export class LoginDto {
   password: string;
 }
 
+@ApiBearerAuth('access-token')
 @Controller('auth')
 export class AppController {
   constructor(private authService: AuthService) {}
@@ -32,7 +24,7 @@ export class AppController {
     return await this.authService.login(req.user);
   }
 
-  @Roles(Role.Admin)
+  //@Roles(Role.Admin)
   @Get('profile')
   getProfile(@Request() req) {
     return req.user;

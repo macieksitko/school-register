@@ -2,13 +2,14 @@
 https://docs.nestjs.com/controllers#controllers
 */
 import { Body, Controller, Get, Param, Post, Put } from '@nestjs/common';
-import { ApiBody, ApiTags } from '@nestjs/swagger';
+import { ApiBearerAuth, ApiBody, ApiTags } from '@nestjs/swagger';
 import { CurrentAccount } from 'src/auth/decorators/current-account.decorator';
 import { UserDocument } from 'src/schemas';
 import { AddStudentMarkDto, CreateStudentDto, UpdateStudentDto } from './dto';
 import { StudentService } from './student.service';
 
 @ApiTags('students')
+@ApiBearerAuth('access-token')
 @Controller('student')
 export class StudentController {
   constructor(private studentService: StudentService) {}
@@ -20,15 +21,6 @@ export class StudentController {
   @Get('/:studentId')
   public async getStudent(@Param('studentId') studentId: string) {
     return this.studentService.findOne(studentId);
-  }
-
-  @Post()
-  @ApiBody({ type: CreateStudentDto })
-  public async createStudent(
-    @Body() createStudentrDto: CreateStudentDto,
-    @CurrentAccount() currentAccount: UserDocument,
-  ) {
-    return this.studentService.create(createStudentrDto);
   }
 
   @Put('/:studentId')
@@ -47,7 +39,11 @@ export class StudentController {
     @Param('studentId') studentId: string,
     @Body() addStudentMarkDto: AddStudentMarkDto,
   ) {
-    return this.studentService.addMark(addStudentMarkDto, studentId);
+    return this.studentService.addMark(
+      addStudentMarkDto,
+      studentId,
+      currentAccount,
+    );
   }
 
   @Put('/:studentId/mark/:markId')
@@ -58,6 +54,11 @@ export class StudentController {
     @Param('markId') markId: string,
     @Body() addStudentMarkDto: AddStudentMarkDto,
   ) {
-    return this.studentService.updateMark(addStudentMarkDto, studentId, markId);
+    return this.studentService.updateMark(
+      addStudentMarkDto,
+      studentId,
+      markId,
+      currentAccount,
+    );
   }
 }

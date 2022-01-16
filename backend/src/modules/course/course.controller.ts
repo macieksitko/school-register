@@ -3,13 +3,14 @@ https://docs.nestjs.com/controllers#controllers
 */
 
 import { Body, Controller, Get, Param, Post, Put } from '@nestjs/common';
-import { ApiHeader, ApiTags } from '@nestjs/swagger';
+import { ApiBearerAuth, ApiHeader, ApiTags } from '@nestjs/swagger';
 import { CurrentAccount } from 'src/auth/decorators/current-account.decorator';
 import { User } from 'src/schemas';
 import { UpdateCourseDto, CreateCourseDto } from './dto';
 import { CourseService } from './course.service';
 
 @ApiTags('courses')
+@ApiBearerAuth('access-token')
 @Controller('course')
 export class CourseController {
   constructor(private courseService: CourseService) {}

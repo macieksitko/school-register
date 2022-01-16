@@ -2,14 +2,13 @@
 https://docs.nestjs.com/controllers#controllers
 */
 
-import { Body, Controller, Get, Param, Post, Put } from '@nestjs/common';
-import { ApiBody, ApiHeader, ApiTags } from '@nestjs/swagger';
-import { CurrentAccount } from 'src/auth/decorators/current-account.decorator';
-import { User } from 'src/schemas';
-import { CreateTeacherDto, UpdateTeacherDto } from './dto';
+import { Body, Controller, Get, Param, Put } from '@nestjs/common';
+import { ApiBearerAuth, ApiBody, ApiTags } from '@nestjs/swagger';
+import { UpdateTeacherDto } from './dto';
 import { TeacherService } from './teacher.service';
 
 @ApiTags('teachers')
+@ApiBearerAuth('access-token')
 @Controller('teacher')
 export class TeacherController {
   constructor(private teacherService: TeacherService) {}
@@ -27,15 +26,6 @@ export class TeacherController {
   @Get('/:teacherId/subject')
   public async getTeacherSubjects(@Param('teacherId') teacherId: string) {
     return this.teacherService.findSubjects(teacherId);
-  }
-
-  @Post()
-  @ApiBody({ type: CreateTeacherDto })
-  public async createTeacher(
-    @Body() createTeacherDto: CreateTeacherDto,
-    @CurrentAccount() currentAccount: User,
-  ) {
-    return this.teacherService.create(createTeacherDto, currentAccount);
   }
 
   @Put('/:teacherId')

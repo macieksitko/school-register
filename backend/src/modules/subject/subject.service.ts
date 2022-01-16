@@ -7,7 +7,10 @@ import {
   StudentDocument,
   Subject,
   SubjectDocument,
+  Teacher,
+  TeacherDocument,
   User,
+  UserDocument,
 } from 'src/schemas';
 import { CreateSubjectDto, UpdateSubjectDto } from './dto';
 
@@ -18,38 +21,60 @@ export class SubjectService {
     private readonly subjectModel: Model<SubjectDocument>,
     @InjectModel(Student.name)
     private readonly studentModel: Model<StudentDocument>,
+    @InjectModel(Teacher.name)
+    private readonly teacherModel: Model<TeacherDocument>,
   ) {}
 
-  async create(
+  public async create(
     createSubjectDto: CreateSubjectDto,
-    currentAccount: User,
+    currentAccount: UserDocument,
   ): Promise<Subject> {
+    const { teacherIds } = createSubjectDto;
+
+    const teachers = await this.teacherModel.find({
+      _id: { $in: teacherIds },
+    });
+
     const subject: Subject = {
-      ...createSubjectDto,
       creationDate: new Date(),
-      //createdBy: currentAccount.name,
+      createdBy: currentAccount.name,
+      teachers,
+      ...createSubjectDto,
     };
-    const createdSubject = await this.subjectModel.create(subject);
+
+    const createdSubject = await (
+      await this.subjectModel.create(subject)
+    ).populate('teachers');
+
+    await this.teacherModel
+      .updateMany(
+        { _id: { $in: teacherIds } },
+        { $push: { subjects: createdSubject._id } },
+      )
+      .populate('subjects');
+
     return createdSubject;
   }
 
-  async findOne(subjectId: string): Promise<Subject | undefined> {
+  public async findOne(subjectId: string): Promise<Subject | undefined> {
     return this.subjectModel.findOne({ _id: subjectId }).lean();
   }
 
-  async findSubjectStudents(subjectId: string): Promise<Student[]> {
+  public async findSubjectStudents(subjectId: string): Promise<Student[]> {
     const subject = await this.subjectModel.findById(subjectId);
+
     const students = await this.studentModel.find({
       subjects: subject,
     });
+
     return students;
   }
 
-  async findAll(): Promise<Subject[]> {
+  public async findAll(): Promise<Subject[]> {
     return this.subjectModel.find().lean();
   }
 
-  async update(
+  public async update(
     updateSubjectDto: UpdateSubjectDto,
     subjectId: string,
   ): Promise<Subject> {

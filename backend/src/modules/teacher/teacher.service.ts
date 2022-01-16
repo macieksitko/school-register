@@ -12,25 +12,25 @@ export class TeacherService {
     private readonly teacherModel: Model<TeacherDocument>,
   ) {}
 
-  async create(
-    createTeacherDto: CreateTeacherDto,
-    currentAccount: User,
-  ): Promise<Teacher> {
-    const teacher: Teacher = {
-      ...createTeacherDto,
-      creationDate: new Date(),
-      createdBy: currentAccount.name,
-    };
-    const createdTeacher = await this.teacherModel.create(teacher);
-    return createdTeacher;
-  }
+  // async create(
+  //   createTeacherDto: CreateTeacherDto,
+  //   currentAccount: User,
+  // ): Promise<Teacher> {
+  //   const teacher: Teacher = {
+  //     ...createTeacherDto,
+  //     creationDate: new Date(),
+  //     createdBy: currentAccount.name,
+  //   };
+  //   const createdTeacher = await this.teacherModel.create(teacher);
+  //   return createdTeacher;
+  // }
 
   async findOne(teacherId: string): Promise<Teacher | undefined> {
     return this.teacherModel.findOne({ _id: teacherId }).lean();
   }
 
   async findAll(): Promise<Teacher[]> {
-    return this.teacherModel.find().lean();
+    return this.teacherModel.find().populate('subjects').lean();
   }
 
   async update(

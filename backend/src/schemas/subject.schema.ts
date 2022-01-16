@@ -25,11 +25,11 @@ export class Subject {
   course?: Course;
 
   @Prop({
-    type: mongoose.Schema.Types.ObjectId,
+    type: [mongoose.Schema.Types.ObjectId],
     required: false,
     ref: 'Teacher',
   })
-  teacher?: Teacher;
+  teachers?: Teacher[];
 }
 
 export const SubjectSchema = SchemaFactory.createForClass(Subject);

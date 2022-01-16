@@ -8,7 +8,7 @@ export default (app: NestExpressApplication) => {
     .setVersion('0.0.1')
     .addTag('school_register')
     .addBearerAuth(
-      { type: 'http', scheme: 'bearer', bearerFormat: 'JWT' },
+      { type: 'http', scheme: 'Bearer', bearerFormat: 'JWT', in: 'Header' },
       'access-token',
     )
     .build();

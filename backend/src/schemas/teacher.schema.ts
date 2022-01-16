@@ -2,7 +2,7 @@ import { Prop, Schema, SchemaFactory } from '@nestjs/mongoose';
 import { Document } from 'mongoose';
 import * as mongoose from 'mongoose';
 import { Role } from 'src/auth/roles/role.enum';
-import { Subject } from '.';
+import { Subject, User } from 'src/schemas';
 
 export type TeacherDocument = Teacher & Document;
 
@@ -25,6 +25,11 @@ export class Teacher {
 
   @Prop({ required: true })
   lastName: string;
+
+  //Relations
+
+  @Prop({ type: mongoose.Schema.Types.ObjectId, ref: 'User' })
+  account: User;
 
   @Prop({
     type: [mongoose.Schema.Types.ObjectId],

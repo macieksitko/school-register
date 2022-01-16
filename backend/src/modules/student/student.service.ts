@@ -27,33 +27,33 @@ export class StudentService {
     private readonly markModel: Model<MarkDocument>,
   ) {}
 
-  async create(
-    createStudentDto: CreateStudentDto,
-    //currentAccount: UserDocument,
-  ): Promise<Student> {
-    //TODO: Mocked account id for tests
+  // async create(
+  //   createStudentDto: CreateStudentDto,
+  //   //currentAccount: UserDocument,
+  // ): Promise<Student> {
+  //   //TODO: Mocked account id for tests
 
-    const currentAccount = {
-      _id: '61b9f0c9c9c19fcb32e303ee',
-    };
+  //   const currentAccount = {
+  //     _id: '61b9f0c9c9c19fcb32e303ee',
+  //   };
 
-    const student: Student = {
-      ...createStudentDto,
-      creationDate: new Date(),
-      createdBy: currentAccount._id,
-    };
+  //   const student: Student = {
+  //     ...createStudentDto,
+  //     creationDate: new Date(),
+  //     createdBy: currentAccount._id,
+  //   };
 
-    const createdStudent = await this.studentModel.create(student);
+  //   const createdStudent = await this.studentModel.create(student);
 
-    return createdStudent;
-  }
+  //   return createdStudent;
+  // }
 
   async findOne(studentId: string): Promise<Student | undefined> {
     return this.studentModel.findOne({ _id: studentId }).lean();
   }
 
   async findAll(): Promise<Student[]> {
-    return this.studentModel.find().lean();
+    return this.studentModel.find().populate('marks').lean();
   }
 
   async update(
@@ -72,17 +72,16 @@ export class StudentService {
   async addMark(
     addStudentMarkDto: AddStudentMarkDto,
     studentId: string,
-    //currentAccount: UserDocument,
+    currentAccount: UserDocument,
   ) {
-    //TODO: Mocked account id for tests
-    const currentAccount = {
-      _id: '61b9f0c9c9c19fcb32e303ee',
-    };
+    const teacher = await this.teacherModel.findById({
+      account: { _id: currentAccount._id },
+    });
 
-    const teacher = await this.teacherModel.findById(currentAccount._id);
     const subject = await this.subjectModel.findById(
       addStudentMarkDto.subjectId,
     );
+
     const student = await this.studentModel.findById(studentId);
 
     const markBody: Mark = {
@@ -97,6 +96,7 @@ export class StudentService {
 
     student.marks.push(mark);
 
+    student.populate('marks');
     student.save();
     return mark;
   }
@@ -105,12 +105,8 @@ export class StudentService {
     updateStudentMarkDto: AddStudentMarkDto,
     studentId: string,
     markId: string,
-    //currentAccount: UserDocument,
+    currentAccount: UserDocument,
   ) {
-    //TODO: Mocked account id for tests
-    const currentAccount = {
-      _id: '61b9f0c9c9c19fcb32e303ee',
-    };
     const teacher = await this.teacherModel.findById(currentAccount._id);
     const subject = await this.subjectModel.findById(
       updateStudentMarkDto.subjectId,
