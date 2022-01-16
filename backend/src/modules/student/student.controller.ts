@@ -5,7 +5,12 @@ import { Body, Controller, Get, Param, Post, Put } from '@nestjs/common';
 import { ApiBearerAuth, ApiBody, ApiTags } from '@nestjs/swagger';
 import { CurrentAccount } from 'src/auth/decorators/current-account.decorator';
 import { UserDocument } from 'src/schemas';
-import { AddStudentMarkDto, CreateStudentDto, UpdateStudentDto } from './dto';
+import {
+  AddStudentMarkDto,
+  AssignStudentToCourseDto,
+  CreateStudentDto,
+  UpdateStudentDto,
+} from './dto';
 import { StudentService } from './student.service';
 
 @ApiTags('students')
@@ -24,7 +29,6 @@ export class StudentController {
   }
 
   @Put('/:studentId')
-  @ApiBody({ type: UpdateStudentDto })
   public async updateStudent(
     @Param('studentId') studentId: string,
     @Body() updateStudentDto: UpdateStudentDto,
@@ -32,8 +36,18 @@ export class StudentController {
     return this.studentService.update(updateStudentDto, studentId);
   }
 
+  @Put('/:studentId/assign')
+  public async assignStudentToCourse(
+    @Body() assignStudentToCourseDto: AssignStudentToCourseDto,
+    @Param('studentId') studentId: string,
+  ) {
+    return this.studentService.assignToCourse(
+      assignStudentToCourseDto,
+      studentId,
+    );
+  }
+
   @Post('/:studentId/mark')
-  @ApiBody({ type: AddStudentMarkDto })
   public async addStudentMark(
     @CurrentAccount() currentAccount: UserDocument,
     @Param('studentId') studentId: string,
@@ -47,7 +61,6 @@ export class StudentController {
   }
 
   @Put('/:studentId/mark/:markId')
-  @ApiBody({ type: AddStudentMarkDto })
   public async updateStudentMark(
     @CurrentAccount() currentAccount: UserDocument,
     @Param('studentId') studentId: string,
