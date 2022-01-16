@@ -41,7 +41,7 @@ export class StudentService {
   }
 
   public async findAll(): Promise<Student[]> {
-    return this.studentModel.find().populate('marks').lean();
+    return this.studentModel.find().populate('marks', 'subjects').lean();
   }
 
   public async update(

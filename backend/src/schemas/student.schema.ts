@@ -4,6 +4,7 @@ import { Document } from 'mongoose';
 import { Course } from './course.schema';
 import { Mark } from './mark.schema';
 import { Subject } from './subject.schema';
+import { User } from './user.schema';
 
 export type StudentDocument = Student & Document;
 
@@ -25,6 +26,9 @@ export class Student {
   lastName: string;
 
   //Relations
+
+  @Prop({ type: mongoose.Schema.Types.ObjectId, ref: 'User' })
+  account: User;
 
   @Prop({
     type: [mongoose.Schema.Types.ObjectId],

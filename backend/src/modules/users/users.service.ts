@@ -62,31 +62,29 @@ export class UsersService {
       creationDate: new Date(),
       createdBy: creatorId,
     };
-    const createdUser = (await this.userModel.create(user)).populate(
-      'createdBy',
-    );
+    const createdUser = await this.userModel.create(user);
 
     if (!createdUser) {
       this.logger.error(`Failed to create user ${username}`);
       throw new BadRequestException(`Failed to create user ${createUserDto}`);
     }
 
-    switch (role) {
-      case Role.Student: {
-        await this.studentModel.create({
-          ...createUserDto,
-          creationDate: new Date(),
-          createdBy: creatorId,
-        });
-      }
-      case Role.Teacher: {
-        await this.teacherModel.create({
-          ...createUserDto,
-          creationDate: new Date(),
-          createdBy: creatorId,
-        });
-      }
-    }
+    if (role === Role.Student) {
+      await this.studentModel.create({
+        ...createUserDto,
+        creationDate: new Date(),
+        account: createdUser,
+        createdBy: creatorId,
+      });
+    } else if (role === Role.Teacher) {
+      await this.teacherModel.create({
+        ...createUserDto,
+        account: createdUser,
+        creationDate: new Date(),
+        createdBy: creatorId,
+      });
+    } else
+      throw new BadRequestException(`Failed to create user ${createUserDto}`);
 
     this.logger.log(`User ${username} created successfully with role ${role}`);
 
