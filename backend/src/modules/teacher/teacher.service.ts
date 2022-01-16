@@ -47,7 +47,10 @@ export class TeacherService {
   }
 
   async findSubjects(teacherId: string): Promise<Subject[]> {
-    const teacher = await this.teacherModel.findById(teacherId);
+    const teacher = await this.teacherModel
+      .findById(teacherId)
+      .populate('subjects');
+
     return teacher.subjects;
   }
 }
