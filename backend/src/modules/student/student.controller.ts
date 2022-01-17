@@ -2,13 +2,12 @@
 https://docs.nestjs.com/controllers#controllers
 */
 import { Body, Controller, Get, Param, Post, Put } from '@nestjs/common';
-import { ApiBearerAuth, ApiBody, ApiTags } from '@nestjs/swagger';
+import { ApiBearerAuth, ApiTags } from '@nestjs/swagger';
 import { CurrentAccount } from 'src/auth/decorators/current-account.decorator';
 import { UserDocument } from 'src/schemas';
 import {
   AddStudentMarkDto,
   AssignStudentToCourseDto,
-  CreateStudentDto,
   UpdateStudentDto,
 } from './dto';
 import { StudentService } from './student.service';
@@ -19,7 +18,7 @@ import { StudentService } from './student.service';
 export class StudentController {
   constructor(private studentService: StudentService) {}
   @Get()
-  public async getTeachers() {
+  public async getStudents() {
     return this.studentService.findAll();
   }
 
@@ -49,7 +48,7 @@ export class StudentController {
 
   @Post('/:studentId/mark')
   public async addStudentMark(
-    @CurrentAccount() currentAccount: UserDocument,
+    @CurrentAccount() currentAccount: any,
     @Param('studentId') studentId: string,
     @Body() addStudentMarkDto: AddStudentMarkDto,
   ) {

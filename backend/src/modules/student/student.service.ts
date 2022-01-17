@@ -1,6 +1,8 @@
-import { Injectable } from '@nestjs/common';
+import { Injectable, UnauthorizedException } from '@nestjs/common';
 import { InjectModel } from '@nestjs/mongoose';
+import * as mongoose from 'mongoose';
 import { Model } from 'mongoose';
+import { CurrentAccount } from 'src/common/interfaces';
 import {
   Course,
   CourseDocument,
@@ -17,7 +19,6 @@ import {
 import {
   AddStudentMarkDto,
   AssignStudentToCourseDto,
-  CreateStudentDto,
   UpdateStudentDto,
 } from './dto';
 
@@ -37,11 +38,13 @@ export class StudentService {
   ) {}
 
   public async findOne(studentId: string): Promise<Student | undefined> {
-    return this.studentModel.findOne({ _id: studentId }).lean();
+    return this.studentModel
+      .findOne({ _id: studentId })
+      .populate('marks', 'subjects');
   }
 
   public async findAll(): Promise<Student[]> {
-    return this.studentModel.find().populate('marks', 'subjects').lean();
+    return this.studentModel.find().populate('marks', 'subjects');
   }
 
   public async update(
@@ -76,17 +79,18 @@ export class StudentService {
   public async addMark(
     addStudentMarkDto: AddStudentMarkDto,
     studentId: string,
-    currentAccount: UserDocument,
+    currentAccount: any,
   ) {
-    const teacher = await this.teacherModel.findById({
-      account: { _id: currentAccount._id },
+    const teacher = await this.teacherModel.findOne({
+      account: currentAccount.userId,
     });
+
+    if (!teacher)
+      throw new UnauthorizedException('Only teacher can add a mark.');
 
     const subject = await this.subjectModel.findById(
       addStudentMarkDto.subjectId,
     );
-
-    const student = await this.studentModel.findById(studentId);
 
     const markBody: Mark = {
       ...addStudentMarkDto,
@@ -97,11 +101,14 @@ export class StudentService {
     };
 
     const mark = await this.markModel.create(markBody);
+    console.log(mark);
 
-    student.marks.push(mark);
+    const student = await this.studentModel
+      .findOneAndUpdate({ _id: studentId }, { $push: { marks: mark } })
+      .populate('marks');
 
-    student.populate('marks');
-    student.save();
+    console.log(student);
+
     return mark;
   }
 
