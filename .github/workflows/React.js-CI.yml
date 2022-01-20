@@ -28,4 +28,4 @@ jobs:
       run: npm ci
     - name: Build React.js application
       working-directory: ./frontend
-      run: npm run build --if-present
+      run: CI=false npm run build --if-present
