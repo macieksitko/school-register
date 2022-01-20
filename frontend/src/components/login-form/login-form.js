@@ -27,9 +27,11 @@ export default function LoginForm() {
       setLoading(true);
 
       const result = await signIn(email, password);
-      if (!result.isOk) {
+      if (!result?.access_token) {
         setLoading(false);
-        notify(result.message, "error", 2000);
+        notify("Wrong credentials", "error", 2000);
+      } else {
+        notify("Hi: " + result?.user?.username, "success", 2000);
       }
     },
     [signIn]

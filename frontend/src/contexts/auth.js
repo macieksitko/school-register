@@ -1,5 +1,6 @@
 import React, { useState, useEffect, createContext, useContext, useCallback } from "react";
-import { getUser, signIn as sendSignInRequest } from "../api/auth";
+import AuthService from "../api/auth.service"
+import TokenService from "../api/token.service"
 
 function AuthProvider(props) {
   const [user, setUser] = useState();
@@ -7,9 +8,9 @@ function AuthProvider(props) {
 
   useEffect(() => {
     (async function () {
-      const result = await getUser();
-      if (result.isOk) {
-        setUser(result.data);
+      const result = await TokenService.getUser();
+      if (result?.access_token) {
+        setUser(result);
       }
 
       setLoading(false);
@@ -17,15 +18,16 @@ function AuthProvider(props) {
   }, []);
 
   const signIn = useCallback(async (email, password) => {
-    const result = await sendSignInRequest(email, password);
-    if (result.isOk) {
-      setUser(result.data);
+    const result = await AuthService.login(email, password);
+    if (result?.access_token) {
+      setUser(result);
     }
 
     return result;
   }, []);
 
   const signOut = useCallback(() => {
+    TokenService.removeUser();
     setUser();
   }, []);
 

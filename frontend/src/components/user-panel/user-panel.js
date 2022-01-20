@@ -32,15 +32,8 @@ export default function UserPanel({ menuMode }) {
     <div className={"user-panel"}>
       <div className={"user-info"}>
         <div className={"image-container"}>
-          <div
-            style={{
-              background: `url(${user.avatarUrl}) no-repeat #fff`,
-              backgroundSize: "cover",
-            }}
-            className={"user-image"}
-          />
         </div>
-        <div className={"user-name"}>{user.email}</div>
+        <div className={"user-name"}>{user.user.username} Role: {user.user.role}</div>
       </div>
 
       {menuMode === "context" && (
