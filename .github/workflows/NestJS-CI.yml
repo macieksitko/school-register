@@ -22,6 +22,7 @@ jobs:
       with:
         node-version: ${{ matrix.node-version }}
         cache: 'npm'
+        cache-dependency-path: ./backend/yarn.lock
     - name: Install dependencies
       working-directory: ./backend
       run: npm ci
