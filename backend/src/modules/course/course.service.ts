@@ -1,7 +1,7 @@
 import { Injectable } from '@nestjs/common';
 import { InjectModel } from '@nestjs/mongoose';
 import { Model } from 'mongoose';
-import { Course, CourseDocument, User } from 'src/schemas';
+import { Course, CourseDocument } from 'src/schemas';
 import { CreateCourseDto, UpdateCourseDto } from './dto';
 
 @Injectable()
@@ -13,19 +13,19 @@ export class CourseService {
 
   async create(
     createCourseDto: CreateCourseDto,
-    currentAccount: User,
+    currentAccount: any,
   ): Promise<Course> {
     const course: Course = {
       ...createCourseDto,
       creationDate: new Date(),
-      //createdBy: currentAccount1.name,
+      createdBy: currentAccount.name,
     };
     const createdCourse = await this.courseModel.create(course);
     return createdCourse;
   }
 
   async findOne(courseId: string): Promise<Course | undefined> {
-    return this.courseModel.findOne({ _id: courseId }).lean();
+    return this.courseModel.findById(courseId).lean();
   }
 
   async findAll(): Promise<Course[]> {

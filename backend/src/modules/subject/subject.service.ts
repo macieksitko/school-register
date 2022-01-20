@@ -2,14 +2,12 @@ import { Injectable } from '@nestjs/common';
 import { InjectModel } from '@nestjs/mongoose';
 import { Model } from 'mongoose';
 import {
-  Course,
   Student,
   StudentDocument,
   Subject,
   SubjectDocument,
   Teacher,
   TeacherDocument,
-  User,
   UserDocument,
 } from 'src/schemas';
 import { CreateSubjectDto, UpdateSubjectDto } from './dto';

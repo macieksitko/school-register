@@ -8,6 +8,7 @@ import { UserDocument } from 'src/schemas';
 import {
   AddStudentMarkDto,
   AssignStudentToCourseDto,
+  AssignStudentToSubjectDto,
   UpdateStudentDto,
 } from './dto';
 import { StudentService } from './student.service';
@@ -35,13 +36,24 @@ export class StudentController {
     return this.studentService.update(updateStudentDto, studentId);
   }
 
-  @Put('/:studentId/assign')
+  @Put('/:studentId/assign-course')
   public async assignStudentToCourse(
     @Body() assignStudentToCourseDto: AssignStudentToCourseDto,
     @Param('studentId') studentId: string,
   ) {
     return this.studentService.assignToCourse(
       assignStudentToCourseDto,
+      studentId,
+    );
+  }
+
+  @Put('/:studentId/assign-subject')
+  public async assignStudentToSubject(
+    @Body() assignStudentToSubjectDto: AssignStudentToSubjectDto,
+    @Param('studentId') studentId: string,
+  ) {
+    return this.studentService.assignToSubject(
+      assignStudentToSubjectDto,
       studentId,
     );
   }
@@ -61,7 +73,7 @@ export class StudentController {
 
   @Put('/:studentId/mark/:markId')
   public async updateStudentMark(
-    @CurrentAccount() currentAccount: UserDocument,
+    @CurrentAccount() currentAccount: any,
     @Param('studentId') studentId: string,
     @Param('markId') markId: string,
     @Body() addStudentMarkDto: AddStudentMarkDto,

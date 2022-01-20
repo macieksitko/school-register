@@ -28,7 +28,7 @@ export class CourseController {
   @Post()
   public async createCourse(
     @Body() createCourseDto: CreateCourseDto,
-    @CurrentAccount() currentAccount: User,
+    @CurrentAccount() currentAccount: any,
   ) {
     return this.courseService.create(createCourseDto, currentAccount);
   }

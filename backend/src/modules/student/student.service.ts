@@ -1,7 +1,12 @@
-import { Injectable, UnauthorizedException } from '@nestjs/common';
+import {
+  Injectable,
+  NotFoundException,
+  UnauthorizedException,
+} from '@nestjs/common';
 import { InjectModel } from '@nestjs/mongoose';
 import * as mongoose from 'mongoose';
 import { Model } from 'mongoose';
+import { NotFoundError } from 'rxjs';
 import { CurrentAccount } from 'src/common/interfaces';
 import {
   Course,
@@ -19,6 +24,7 @@ import {
 import {
   AddStudentMarkDto,
   AssignStudentToCourseDto,
+  AssignStudentToSubjectDto,
   UpdateStudentDto,
 } from './dto';
 
@@ -31,20 +37,25 @@ export class StudentService {
     private readonly teacherModel: Model<TeacherDocument>,
     @InjectModel(Subject.name)
     private readonly subjectModel: Model<SubjectDocument>,
-    @InjectModel('Mark')
+    @InjectModel(Mark.name)
     private readonly markModel: Model<MarkDocument>,
     @InjectModel(Course.name)
     private readonly courseModel: Model<CourseDocument>,
   ) {}
 
   public async findOne(studentId: string): Promise<Student | undefined> {
-    return this.studentModel
-      .findOne({ _id: studentId })
-      .populate('marks', 'subjects');
+    const student = await this.studentModel
+      .findById(studentId)
+      .populate('marks')
+      .populate('subjects');
+
+    if (!student) throw new NotFoundException('Student does not exist.');
+
+    return student;
   }
 
   public async findAll(): Promise<Student[]> {
-    return this.studentModel.find().populate('marks', 'subjects');
+    return this.studentModel.find().populate('marks').populate('subjects');
   }
 
   public async update(
@@ -67,11 +78,25 @@ export class StudentService {
     const { courseId } = assignStudentToCourseDto;
 
     const course = await this.courseModel.findById(courseId);
-    const student = await this.studentModel.findById(studentId);
+    const student = await this.studentModel.findOneAndUpdate(
+      { _id: studentId },
+      { $push: { courses: course } },
+    );
 
-    student.courses.push(course);
-    student.populate('course');
-    student.save();
+    return student;
+  }
+
+  public async assignToSubject(
+    assignStudentToSubjectDto: AssignStudentToSubjectDto,
+    studentId: string,
+  ): Promise<Student> {
+    const { subjectId } = assignStudentToSubjectDto;
+
+    const subject = await this.subjectModel.findById(subjectId);
+    const student = await this.studentModel.findOneAndUpdate(
+      { _id: studentId },
+      { $push: { subjects: subject } },
+    );
 
     return student;
   }
@@ -101,15 +126,13 @@ export class StudentService {
     };
 
     const mark = await this.markModel.create(markBody);
-    console.log(mark);
 
-    const student = await this.studentModel
-      .findOneAndUpdate({ _id: studentId }, { $push: { marks: mark } })
-      .populate('marks');
+    const student = await this.studentModel.findOneAndUpdate(
+      { _id: studentId },
+      { $push: { marks: mark } },
+    );
 
-    console.log(student);
-
-    return mark;
+    return student;
   }
 
   public async updateMark(

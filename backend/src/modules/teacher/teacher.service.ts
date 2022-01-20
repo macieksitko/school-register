@@ -26,7 +26,7 @@ export class TeacherService {
   // }
 
   async findOne(teacherId: string): Promise<Teacher | undefined> {
-    return this.teacherModel.findOne({ _id: teacherId }).lean();
+    return this.teacherModel.findById(teacherId).populate('subjects');
   }
 
   async findAll(): Promise<Teacher[]> {
