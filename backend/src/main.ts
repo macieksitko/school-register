@@ -2,7 +2,7 @@ import { Logger, RequestMethod, ValidationPipe } from '@nestjs/common';
 import { ConfigService } from '@nestjs/config';
 import { NestFactory } from '@nestjs/core';
 import { AppModule } from './app.module';
-import swaggerBoostrap from './bootstraps/swagger.bootstrap';
+import swaggerBootstrap from './bootstraps/swagger.bootstrap';
 import { NestExpressApplication } from '@nestjs/platform-express';
 import { databaseBootstrap } from './bootstraps/mongodb.bootstrap';
 
@@ -20,7 +20,11 @@ async function bootstrap() {
     credentials: true,
   });
 
-  swaggerBoostrap(app);
+  const profile = app.get(ConfigService).get<string>('profile');
+  if(['dev', 'development'].includes(profile)) {
+    swaggerBootstrap(app);
+  }
+  
   databaseBootstrap(app);
 
   await app.listen(serverPort);

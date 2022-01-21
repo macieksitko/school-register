@@ -1,4 +1,5 @@
 interface AppConfig {
+  profile: string;
   server: {
     port: number;
   };
@@ -16,6 +17,7 @@ interface AppConfig {
 }
 
 const getConfig = (): AppConfig => ({
+  profile: process.env.NODE_ENV || 'dev',
   server: {
     port: parseInt(process.env.SERVER_PORT, 10) || 3000,
   },
