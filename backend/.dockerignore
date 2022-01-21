@@ -10,3 +10,4 @@ Dockerfile
 .env
 mongo-init*
 README.md
+node_modules
