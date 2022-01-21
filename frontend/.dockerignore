@@ -1,0 +1,10 @@
+.idea
+build
+.dockerignore
+Dockerfile
+.eslintrc*
+.prettierrc*
+.gitignore
+.env
+README.md
+node_modules

@@ -5,6 +5,10 @@ networks:
     labels:
       description: 'backend services network'
 
+  frontend:
+    labels:
+      description: 'frontend server network'
+
 services:
   backend:
     build:
@@ -31,6 +35,7 @@ services:
 
     networks:
       - backend
+      - frontend
     depends_on:
       - mongodb
     restart: always
@@ -90,4 +95,25 @@ services:
       - backend
     depends_on:
       - mongodb
+    restart: always
+
+  frontend:
+    build:
+      context: ./frontend
+      args:
+        - profile=dev
+    image: school-register-frontend:1.0.0
+    container_name: school-register-frontend
+
+    ports:
+      - 3005:${SERVER_PORT:-3000}
+
+    environment:
+      - SERVER_PORT=3000
+      - BACKEND_URL=localhost:3000
+
+    hostname: frontend
+
+    networks:
+      - frontend
     restart: always
