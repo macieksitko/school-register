@@ -6,11 +6,42 @@ networks:
       description: 'backend services network'
 
 services:
+  backend:
+    build:
+      context: ./backend
+      args:
+        - profile=dev
+    image: school-register-backend:1.0.0
+    container_name: school-register-backend
+
+    ports:
+      - 3000:${SERVER_PORT:-3000}
+
+    environment:
+      - SERVER_PORT=3000
+      - DB_HOST=mongodb
+      - DB_PORT=27017
+      - DB_USERNAME=school_register
+      - DB_PASSWORD=school_register
+      - DB_NAME=school_register
+      - JWT_SECRET=secret
+      - JWT_EXPIRATION_TIME=1h
+
+    hostname: backend
+
+    networks:
+      - backend
+    depends_on:
+      - mongodb
+    restart: always
+
   mongodb:
     image: mongo:5.0.4
-    container_name: mongodb
+    container_name: school-register-mongodb
+
     ports:
       - 3001:27017
+
     environment:
       MONGO_INITDB_ROOT_USERNAME: admin
       MONGO_INITDB_ROOT_PASSWORD: admin
@@ -18,19 +49,24 @@ services:
       MONGO_INITDB_DATABASE: school_register
       MONGO_INITDB_USER: school_register
       MONGO_INITDB_PASSWORD: school_register
+
     volumes:
       - ./backend/mongo-data:/data/db
       - ./backend/mongo-init.sh:/docker-entrypoint-initdb.d/mongo-init.sh:ro
+
     hostname: mongodb
+
     networks:
       - backend
     restart: always
 
   mongo-express:
     image: mongo-express:1.0.0-alpha.4
-    container_name: mongo-express
+    container_name: school-register-mongo-express
+
     ports:
       - 3002:8081
+
     environment:
       ME_CONFIG_MONGODB_ENABLE_ADMIN: 'true'
       ME_CONFIG_BASICAUTH_USERNAME: admin
@@ -47,7 +83,9 @@ services:
       ME_CONFIG_MONGODB_ADMINUSERNAME: admin
       ME_CONFIG_MONGODB_ADMINPASSWORD: admin
       ME_CONFIG_MONGODB_URL: mongodb://admin:admin@mongodb:27017?ssl=false
+
     hostname: mongo-express
+
     networks:
       - backend
     depends_on:

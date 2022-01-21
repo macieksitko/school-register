@@ -1,0 +1,12 @@
+.vscode
+dist
+mongo-data
+test
+.dockerignore
+Dockerfile
+.eslintrc*
+.prettierrc*
+.gitignore
+.env
+mongo-init*
+README.md
