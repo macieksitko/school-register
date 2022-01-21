@@ -1,0 +1,15 @@
+version: '3.1'
+
+services:
+  backend:
+    build:
+      args:
+        - profile=prod
+
+    ports:
+      - 80:${SERVER_PORT:-3000}
+
+  mongo-express:
+    entrypoint: ['echo', 'mongo-express is disabled in prod environment']
+
+    restart: 'no'
