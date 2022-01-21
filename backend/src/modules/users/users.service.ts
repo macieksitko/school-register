@@ -98,4 +98,17 @@ export class UsersService {
       })
       .lean();
   }
+
+  async createAdmin(createUserDto: CreateUserDto, param2) {
+    const user: User = {
+      ...createUserDto,
+      password: await this.passwordService.hash(createUserDto.password),
+      creationDate: new Date(),
+      createdBy: param2
+    };
+    const createdUser = (await this.userModel.create(user)).populate(
+      'createdBy',
+    );
+    return createdUser;
+  }
 }

@@ -35,7 +35,7 @@ export class SubjectService {
 
     const subject: Subject = {
       creationDate: new Date(),
-      createdBy: currentAccount.name,
+      createdBy: currentAccount._id,
       teachers,
       ...createSubjectDto,
     };

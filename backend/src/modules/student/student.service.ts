@@ -45,7 +45,7 @@ export class StudentService {
 
   public async findOne(studentId: string): Promise<Student | undefined> {
     const student = await this.studentModel
-      .findById(studentId)
+      .findOne({ account: studentId })
       .populate('marks')
       .populate('subjects');
 

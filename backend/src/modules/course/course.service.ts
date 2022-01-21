@@ -18,7 +18,7 @@ export class CourseService {
     const course: Course = {
       ...createCourseDto,
       creationDate: new Date(),
-      createdBy: currentAccount.name,
+      createdBy: currentAccount._id,
     };
     const createdCourse = await this.courseModel.create(course);
     return createdCourse;

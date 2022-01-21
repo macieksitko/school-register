@@ -24,7 +24,7 @@ export const databaseBootstrap = async (
     lastName: 'admin',
   };
 
-  const { username }: User = await usersService.create(defaultUser, null);
+  const { username }: User = await usersService.createAdmin(defaultUser, null);
 
   logger.log(
     `Created default user ${username}:${defaultUser.password}, please use this credentials for first login and immediately change your password`,
