@@ -1,4 +1,4 @@
-# school-register :student: :heart: :school: :trophy:
+# school-register :student: :heart: :school: :trophy: ![GitHub Workflow Status](https://img.shields.io/github/workflow/status/macieksitko/school-register/NestJS%20CI?label=NestJS-build) ![GitHub Workflow Status](https://img.shields.io/github/workflow/status/macieksitko/school-register/React.js%20CI?label=React.js-build)
 
 Web application designed to manage the register of students grades
 
