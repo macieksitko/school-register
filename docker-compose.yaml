@@ -19,10 +19,10 @@ services:
     container_name: school-register-backend
 
     ports:
-      - 3000:${SERVER_PORT:-3000}
+      - 3000:${PORT:-3000}
 
     environment:
-      - SERVER_PORT=3000
+      - PORT=3000
       - DB_HOST=mongodb
       - DB_PORT=27017
       - DB_USERNAME=school_register
@@ -107,10 +107,10 @@ services:
     container_name: school-register-frontend
 
     ports:
-      - 3005:${SERVER_PORT:-3000}
+      - 3005:${PORT:-3000}
 
     environment:
-      - SERVER_PORT=3000
+      - PORT=3000
 
     hostname: frontend
 

@@ -19,4 +19,4 @@ ARG profile=production
 ENV NODE_ENV=${profile}
 RUN npm install serve
 COPY --from=build_stage /school-register-frontend/build ./build
-CMD npx serve -s build --listen ${SERVER_PORT}
+CMD npx serve -s build --listen ${PORT}

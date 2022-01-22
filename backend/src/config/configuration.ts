@@ -19,7 +19,7 @@ interface AppConfig {
 const getConfig = (): AppConfig => ({
   profile: process.env.NODE_ENV || 'dev',
   server: {
-    port: parseInt(process.env.SERVER_PORT, 10) || 3000,
+    port: parseInt(process.env.PORT, 10) || 3000,
   },
   database: {
     host: process.env.DB_HOST || '127.0.0.1',
