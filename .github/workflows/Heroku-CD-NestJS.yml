@@ -1,0 +1,24 @@
+name: Heroku CD deploy NestJS container
+
+on:
+  push:
+    branches: [main]
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v2
+
+      - name: Build, push and release a Docker NestJS container to Heroku
+        uses: gonuit/heroku-docker-deploy@v1.3.3
+        with:                
+          email: ${{ secrets.HEROKU_EMAIL }}
+          heroku_api_key: ${{ secrets.HEROKU_API_KEY }}
+          heroku_app_name: ${{ secrets.HEROKU_NESTJS_APP_NAME }}
+          dockerfile_directory: ./backend
+          dockerfile_name: Dockerfile
+          docker_options: --build-arg profile=dev
+
+          process_type: web
