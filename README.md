@@ -2,7 +2,7 @@
 
 Web application designed to manage the register of students grades
 
-## Prerequisites
+## Prerequisites :hammer_and_wrench:
 
 In order to run application in convenient way following dependencies are required:
 
