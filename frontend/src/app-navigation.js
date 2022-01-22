@@ -14,4 +14,9 @@ export const navigation = [
     text: "Student",
     path: "/attendance",
   },
+  {
+    icon: "detailslayout",
+    text: "User List",
+    path: "/userlist",
+  },
 ];
