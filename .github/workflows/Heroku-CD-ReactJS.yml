@@ -21,6 +21,6 @@ jobs:
           heroku_app_name: ${{ secrets.HEROKU_REACTJS_APP_NAME }}
           dockerfile_directory: ./frontend
           dockerfile_name: Dockerfile
-          docker_options: --build-arg backend_url=https://${backend_app_name}.herokuapp.com --build-arg profile=prod
+          docker_options: --build-arg backend_url="https://${backend_app_name}.herokuapp.com" --build-arg profile=prod
 
           process_type: web
