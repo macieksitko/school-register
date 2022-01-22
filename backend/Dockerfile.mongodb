@@ -1,2 +1,14 @@
 FROM mongo:5.0.4
+
+ARG root_username=admin
+ARG root_password=admin
+ARG init_db_user=school_register
+ARG init_db_password=school_register
+
+ENV MONGO_INITDB_ROOT_USERNAME=${root_username}
+ENV MONGO_INITDB_ROOT_PASSWORD=${root_password}
+ENV MONGO_INITDB_DATABASE=school_register
+ENV MONGO_INITDB_USER=${init_db_user}
+ENV MONGO_INITDB_PASSWORD=${init_db_password}
+
 EXPOSE 27017
