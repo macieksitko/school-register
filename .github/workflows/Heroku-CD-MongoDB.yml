@@ -13,13 +13,18 @@ jobs:
 
       - name: Build, push and release a Docker MongoDB container to Heroku
         uses: gonuit/heroku-docker-deploy@v1.3.3
+        env: 
+          root_username: ${{ secrets.MONGO_DB_ROOT_USERNAME }}
+          root_password: ${{ secrets.MONGO_DB_ROOT_PASSWORD}}
+          init_db_user: ${{ MONGO_DB_INIT_DB_USERNAME }}
+          init_db_password: ${{ MONGO_DB_INIT_DB_PASSWORD }}
         with:                
           email: ${{ secrets.HEROKU_EMAIL }}
           heroku_api_key: ${{ secrets.HEROKU_API_KEY }}
           heroku_app_name: ${{ secrets.HEROKU_MONGO_DB_APP_NAME }}
           dockerfile_directory: ./backend
           dockerfile_name: Dockerfile.mongodb
-          docker_options: --build-arg root_username=${{ secrets.MONGO_DB_ROOT_USERNAME }} --build-arg root_password=${{ secrets.MONGO_DB_ROOT_PASSWORD}} --build-arg init_db_user=${{ MONGO_DB_INIT_DB_USERNAME }} --build-arg init_db_password=${{ MONGO_DB_INIT_DB_PASSWORD }}
+          docker_options: --build-arg root_username=$root_username --build-arg root_password=$root_password --build-arg init_db_user=$init_db_user --build-arg init_db_password=$init_db_password
 
           process_type: web
           
