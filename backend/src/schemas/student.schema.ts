@@ -5,6 +5,7 @@ import { Course } from './course.schema';
 import { Mark } from './mark.schema';
 import { Subject } from './subject.schema';
 import { User } from './user.schema';
+import { Role } from 'src/auth/roles/role.enum';
 
 export type StudentDocument = Student & Document;
 
@@ -21,6 +22,9 @@ export class Student {
 
   @Prop({ required: true })
   name: string;
+
+  @Prop({ required: true, type: String, enum: Role })
+  role: Role;
 
   @Prop({ required: true })
   lastName: string;
