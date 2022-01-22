@@ -29,13 +29,13 @@ import { CourseModule } from './modules/course/course.module';
     MongooseModule.forRootAsync({
       imports: [ConfigModule],
       useFactory: async (configService: ConfigService) => {
-        const { username, password, host, port, name } =
+        const { username, password, host, port, name, args } =
           configService.get<AppConfig['database']>('database');
         new Logger('MongoConnection').log(
           `Initializing connection with ${name} database on ${host}:${port}`,
         );
         return {
-          uri: `mongodb://${username}:${password}@${host}:${port}/${name}?ssl=false`,
+          uri: `mongodb://${username}:${password}@${host}:${port}/${name}?${args}`,
         };
       },
       inject: [ConfigService],

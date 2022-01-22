@@ -9,6 +9,7 @@ interface AppConfig {
     username: string;
     password: string;
     name: string;
+    args: string;
   };
   jwt: {
     secret: string;
@@ -27,6 +28,7 @@ const getConfig = (): AppConfig => ({
     username: process.env.DB_USERNAME || 'admin',
     password: process.env.DB_PASSWORD || 'admin',
     name: process.env.DB_NAME || 'school_register',
+    args: process.env.DB_ARGS || 'ssl=false',
   },
   jwt: {
     secret: process.env.JWT_SECRET || 'secret',

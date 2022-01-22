@@ -28,6 +28,7 @@ services:
       - DB_USERNAME=school_register
       - DB_PASSWORD=school_register
       - DB_NAME=school_register
+      - DB_ARGS=ssl=false
       - JWT_SECRET=secret
       - JWT_EXPIRATION_TIME=1h
 
