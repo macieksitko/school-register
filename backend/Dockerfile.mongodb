@@ -12,3 +12,4 @@ ENV MONGO_INITDB_USER=${init_db_user}
 ENV MONGO_INITDB_PASSWORD=${init_db_password}
 
 EXPOSE 27017
+CMD mongod --port ${PORT}
