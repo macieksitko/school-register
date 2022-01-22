@@ -1,0 +1,25 @@
+name: Heroku CD deploy MongoDB container
+
+on:
+  push:
+    branches: [master]
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v2
+
+      - name: Build, push and release a Docker MongoDB container to Heroku
+        uses: gonuit/heroku-docker-deploy@v1.3.3
+        with:                
+          email: ${{ secrets.HEROKU_EMAIL }}
+          heroku_api_key: ${{ secrets.HEROKU_API_KEY }}
+          heroku_app_name: ${{ secrets.HEROKU_MONGO_DB_APP_NAME }}
+          dockerfile_directory: ./backend
+          dockerfile_name: Dockerfile.mongodb
+          docker_options: --build-arg root_username=${{ secrets.MONGO_DB_ROOT_USERNAME }} --build-arg root_password=${{ secrets.MONGO_DB_ROOT_PASSWORD}} --build-arg init_db_user=${{ MONGO_DB_INIT_DB_USERNAME }} --build-arg init_db_password=${{ MONGO_DB_INIT_DB_PASSWORD }}
+
+          process_type: web
+          
