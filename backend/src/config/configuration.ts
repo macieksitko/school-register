@@ -4,6 +4,7 @@ interface AppConfig {
     port: number;
   };
   database: {
+    prefix: string;
     host: string;
     port: number;
     username: string;
@@ -23,6 +24,7 @@ const getConfig = (): AppConfig => ({
     port: parseInt(process.env.PORT, 10) || 3000,
   },
   database: {
+    prefix: process.env.DB_PREFIX || 'mongodb',
     host: process.env.DB_HOST || '127.0.0.1',
     port: parseInt(process.env.DB_PORT, 10) || 27017,
     username: process.env.DB_USERNAME || 'admin',
