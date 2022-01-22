@@ -2,6 +2,8 @@ FROM node:12.22.9-alpine3.15 AS build_stage
 WORKDIR /school-register-frontend
 COPY package*.json ./
 RUN npm install --silent
+ARG backend_url=http://127.0.0.1:3000
+ENV REACT_APP_BACKEND_URL=${backend_url}
 COPY . ./
 RUN npm run build
 

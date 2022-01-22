@@ -101,6 +101,7 @@ services:
     build:
       context: ./frontend
       args:
+        - backend_url=http://127.0.0.1:3000
         - profile=dev
     image: school-register-frontend:1.0.0
     container_name: school-register-frontend
@@ -110,7 +111,6 @@ services:
 
     environment:
       - SERVER_PORT=3000
-      - BACKEND_URL=localhost:3000
 
     hostname: frontend
 

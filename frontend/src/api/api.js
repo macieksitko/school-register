@@ -1,8 +1,10 @@
 import axios from "axios";
 import TokenService from "./token.service";
 
+const BACKEND_URL = process.env.REACT_APP_BACKEND_URL;
+
 const instance = axios.create({
-    baseURL: "http://localhost:3000",
+    baseURL: BACKEND_URL || "http://localhost:3000",
     headers: {
         "Content-Type": "application/json",
     },
