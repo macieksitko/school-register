@@ -1,4 +1,4 @@
-import { Logger, RequestMethod, ValidationPipe } from '@nestjs/common';
+import { Logger, ValidationPipe } from '@nestjs/common';
 import { ConfigService } from '@nestjs/config';
 import { NestFactory } from '@nestjs/core';
 import { AppModule } from './app.module';
@@ -21,11 +21,13 @@ async function bootstrap() {
   });
 
   const profile = app.get(ConfigService).get<string>('profile');
-  if(['dev', 'development'].includes(profile)) {
+  if (['dev', 'development'].includes(profile)) {
     swaggerBootstrap(app);
   }
-  
-  databaseBootstrap(app);
+
+  //hotfix for running logic of default admin user creation
+  //after connection with database is probably established
+  setTimeout(() => databaseBootstrap(app), 60 * 1000);
 
   await app.listen(serverPort);
   const serverUrl = await app.getUrl();
