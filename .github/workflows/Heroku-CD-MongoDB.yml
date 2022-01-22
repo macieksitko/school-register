@@ -16,8 +16,8 @@ jobs:
         env: 
           root_username: ${{ secrets.MONGO_DB_ROOT_USERNAME }}
           root_password: ${{ secrets.MONGO_DB_ROOT_PASSWORD}}
-          init_db_user: ${{ MONGO_DB_INIT_DB_USERNAME }}
-          init_db_password: ${{ MONGO_DB_INIT_DB_PASSWORD }}
+          init_db_user: ${{ secrets.MONGO_DB_INIT_DB_USERNAME }}
+          init_db_password: ${{ secrets.MONGO_DB_INIT_DB_PASSWORD }}
         with:                
           email: ${{ secrets.HEROKU_EMAIL }}
           heroku_api_key: ${{ secrets.HEROKU_API_KEY }}
