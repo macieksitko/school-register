@@ -11,7 +11,7 @@ export const navigation = [
   },
   {
     icon: "clock",
-    text: "Attendance",
+    text: "Student",
     path: "/attendance",
   },
 ];
