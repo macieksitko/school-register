@@ -1,7 +1,6 @@
 import { withNavigationWatcher } from "./contexts/navigation";
 import { HomePage, AttendancePage, ProfilePage, MarkSheetPage, UserList } from "./pages";
 import SubjectList from "./pages/subject-list/subject-list";
-// import { ATTENDANCE, HOME, MARK_SHEET, PROFILE, USER_LIST } from "./utils/app-routes";
 import { TEACHER, ADMIN, STUDENT } from "./utils/user-roles";
 
 export const ATTENDANCE = "/attendance";
@@ -43,7 +42,7 @@ export const sideBarNavigation = [
     path: ATTENDANCE,
   },
   {
-    icon: "detailslayout",
+    icon: "group",
     text: "User List",
     path: USER_LIST,
   },
