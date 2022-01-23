@@ -10,8 +10,11 @@ import { LoadIndicator } from "devextreme-react/load-indicator";
 import formatCaps from "../../utils/format-caps";
 
 export default function UserPopup({ onClose, onSave }) {
-  const roles = [userRoles.teacher, userRoles.student].map((r) => formatCaps(r));
+  const roles = Object.values(userRoles)
+    .filter((o) => o !== userRoles.ADMIN)
+    .map((r) => formatCaps(r));
   const [isLoading, setIsLoading] = useState(false);
+  const [repeatedPassword, setRepeatedPassword] = useState("");
   const [userData, setUserData] = useState({
     name: "",
     lastName: "",
@@ -20,7 +23,6 @@ export default function UserPopup({ onClose, onSave }) {
     role: "",
     username: "",
   });
-  const [repeatedPassword, setRepeatedPassword] = useState("");
 
   const closeButton = {
     icon: "close",
