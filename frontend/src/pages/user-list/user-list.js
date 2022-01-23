@@ -38,6 +38,7 @@ export default function UserList() {
         })
         .finally(() => {
           setIsLoading(false);
+          console.log("users", users);
         });
     };
 
@@ -69,18 +70,19 @@ export default function UserList() {
       >
         <Selection mode="multiple" />
         <GroupPanel visible={true} />
-        <Column caption="First Name" dataField="name" />
-        <Column caption="Last Name" dataField="lastName" />
-        <Column caption="Mail" dataField="email" />
+        <Column caption="First Name" dataField="name" width={250} />
+        <Column caption="Last Name" dataField="lastName" width={250} />
+        <Column caption="Mail" dataField="email" width={200} />
         <Column
           caption="Role"
           dataField="role"
           cellRender={({ value }) => (value ? formatCaps(value) : "")}
+          width={100}
         />
         <Column
           caption="Subjects"
           dataField="subjects"
-          cellRender={({ value }) => (value.length !== 0 ? value : "empty")}
+          cellRender={({ value }) => (value.length !== 0 ? value.map((x) => x.name) : "-")}
         />
         <Export enabled={true} allowExportSelectedData={true} />
         <Pager
