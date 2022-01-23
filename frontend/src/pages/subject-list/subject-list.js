@@ -1,7 +1,6 @@
 import React, { useEffect, useState } from "react";
 import { Button } from "devextreme-react/button";
 import "./subject-list.scss";
-import UserPopup from "../../components/user-popup/user-popup";
 import DataGrid, {
   Column,
   Export,
@@ -14,6 +13,7 @@ import notify from "devextreme/ui/notify";
 import { LoadIndicator } from "devextreme-react/load-indicator";
 import TeacherSevice from "../../api/teacher.service";
 import SubjectService from "../../api/subject.service";
+import SubjectPopup from "../../components/subject-popup/subject-popup";
 
 export default function SubjectList() {
   const [teachers, setTeachers] = useState([]);
@@ -63,9 +63,10 @@ export default function SubjectList() {
           )}
         </h2>
         <Button
-          text="Add subject"
+          text="Add new subject"
           type="normal"
           className="content-block"
+          icon="add"
           onClick={() => setIsPopupVisible(true)}
         />
       </div>
@@ -105,8 +106,9 @@ export default function SubjectList() {
         <Paging defaultPageSize={5} />
       </DataGrid>
       {isPopupVisible && (
-        <UserPopup
+        <SubjectPopup
           key={reload ? 1 : 0}
+          teachers={teachers}
           isVisible={isPopupVisible}
           onClose={() => setIsPopupVisible(false)}
           onSave={() => {

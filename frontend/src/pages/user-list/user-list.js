@@ -55,8 +55,9 @@ export default function UserList() {
           )}
         </h2>
         <Button
-          text="Add user"
+          text="Add new user"
           type="normal"
+          icon="add"
           className="content-block"
           onClick={() => setIsPopupVisible(true)}
         />
