@@ -3,6 +3,7 @@ import { HomePage, AttendancePage, ProfilePage, MarkSheetPage, UserList } from "
 import SubjectList from "./pages/subject-list/subject-list";
 import { TEACHER, ADMIN, STUDENT } from "./utils/user-roles";
 
+export const LOGIN = "/login";
 export const ATTENDANCE = "/attendance";
 export const PROFILE = "/profile";
 export const MARK_SHEET = "/mark-sheet";
