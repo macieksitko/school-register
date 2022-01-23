@@ -3,16 +3,14 @@ import { Popup, ToolbarItem } from "devextreme-react/popup";
 import "./user-popup.scss";
 import TextBox from "devextreme-react/text-box";
 import SelectBox from "devextreme-react/select-box";
-import userRoles from "../../utils/user-roles";
+import { STUDENT, TEACHER } from "../../utils/user-roles";
 import userService from "../../api/user.service";
 import notify from "devextreme/ui/notify";
 import { LoadIndicator } from "devextreme-react/load-indicator";
 import formatCaps from "../../utils/format-caps";
 
 export default function UserPopup({ onClose, onSave }) {
-  const roles = Object.values(userRoles)
-    .filter((o) => o !== userRoles.ADMIN)
-    .map((r) => formatCaps(r));
+  const roles = [TEACHER, STUDENT].map((r) => formatCaps(r));
   const [isLoading, setIsLoading] = useState(false);
   const [repeatedPassword, setRepeatedPassword] = useState("");
   const [userData, setUserData] = useState({

@@ -1,22 +1,24 @@
+import { HOME, USER_LIST, ATTENDANCE, MARK_SHEET } from "./utils/pages-routes";
+
 export const navigation = [
   {
     text: "Home",
-    path: "/home",
+    path: HOME,
     icon: "home",
   },
   {
     icon: "doc",
     text: "Mark-Sheet",
-    path: "/mark-sheet",
+    path: MARK_SHEET,
   },
   {
     icon: "clock",
     text: "Student",
-    path: "/attendance",
+    path: ATTENDANCE,
   },
   {
     icon: "detailslayout",
     text: "User List",
-    path: "/userlist",
+    path: USER_LIST,
   },
 ];
