@@ -1,9 +1,13 @@
 import api from "./api";
 
-class UserService {
-  async addUser(body) {
+class SubjectService {
+  getSubjects() {
+    return api.get("/api/subject");
+  }
+
+  async addSubject(body) {
     try {
-      const response = await api.post("/api/users/create", body, {
+      const response = await api.post("/api/subject", body, {
         headers: {
           "Content-Type": "application/json",
         },
@@ -16,4 +20,4 @@ class UserService {
   }
 }
 
-export default new UserService();
+export default new SubjectService();

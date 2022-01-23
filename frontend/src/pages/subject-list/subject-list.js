@@ -13,34 +13,40 @@ import DataGrid, {
 import notify from "devextreme/ui/notify";
 import { LoadIndicator } from "devextreme-react/load-indicator";
 import TeacherSevice from "../../api/teacher.service";
-import StudentSevice from "../../api/student.service";
-import formatCaps from "../../utils/format-caps";
+import SubjectService from "../../api/subject.service";
 
 export default function SubjectList() {
-  const [users, setUsers] = useState([]);
+  const [teachers, setTeachers] = useState([]);
+  const [subjects, setSubjects] = useState([]);
   const [isPopupVisible, setIsPopupVisible] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
   const [reload, setReload] = useState(false);
 
   useEffect(() => {
     const fetchData = async () => {
-      const t = TeacherSevice.getTeachers();
-      const s = StudentSevice.getStudents();
-
       setIsLoading(true);
-      Promise.all([t, s])
-        .then((responses) => {
-          const data = responses.map((r) => r.data).flat(1);
-          console.log("data", data);
-          setUsers(data);
+      TeacherSevice.getTeachers()
+        .then(({ data }) => {
+          const mappedTeachers = data.map(({ _id, name, lastName, email }) => ({
+            _id,
+            description: `${name} ${lastName} (${email})`,
+          }));
+          setTeachers(mappedTeachers);
         })
         .catch((err) => {
-          notify(err?.message || "Unable to download users", "error", 2000);
-          setUsers([]);
+          notify(err?.message || "Unable to download teachers", "error", 2000);
+          setTeachers([]);
         })
+        .then(() =>
+          SubjectService.getSubjects()
+            .then(({ data }) => setSubjects(data))
+            .catch((err) => {
+              notify(err?.message || "Unable to download subjects", "error", 2000);
+              setSubjects([]);
+            })
+        )
         .finally(() => {
           setIsLoading(false);
-          console.log("users", users);
         });
     };
 
@@ -65,25 +71,29 @@ export default function SubjectList() {
       </div>
       <DataGrid
         id="gridContainer"
-        dataSource={users}
+        dataSource={subjects}
         keyExpr="_id"
         showBorders
         style={{ padding: "0px 20px" }}
       >
         <Selection mode="multiple" />
         <GroupPanel visible={true} />
-        <Column caption="First Name" dataField="name" />
-        <Column caption="Last Name" dataField="lastName" />
-        <Column caption="Mail" dataField="email" />
+        <Column caption="Subject Name" dataField="name" width={300} />
         <Column
-          caption="Role"
-          dataField="role"
-          cellRender={({ value }) => (value ? formatCaps(value) : "")}
+          caption="Creation Date"
+          dataField="creationDate"
+          width={150}
+          cellRender={({ value }) => new Date(value).toDateString()}
         />
         <Column
-          caption="Subjects"
-          dataField="subjects"
-          cellRender={({ value }) => (value.length !== 0 ? value : "empty")}
+          caption="Teachers"
+          dataField="teachers"
+          cellRender={({ value }) => {
+            console.log(value);
+            return value.length !== 0 && teachers
+              ? value.map((teacherId) => teachers.find(({ _id }) => _id === teacherId)?.description)
+              : "-";
+          }}
         />
         <Export enabled={true} allowExportSelectedData={true} />
         <Pager
