@@ -35,7 +35,9 @@ import { CourseModule } from './modules/course/course.module';
           `Initializing connection with ${name} database on ${host}:${port}`,
         );
         return {
-          uri: `${prefix}://${username}:${password}@${host}${prefix.includes('+srv') ? '' : ':' + port}/${name}?${args}`,
+          uri: `${prefix}://${username}:${password}@${host}${
+            prefix.includes('+srv') ? '' : ':' + port
+          }/${name}?${args}`,
         };
       },
       inject: [ConfigService],
