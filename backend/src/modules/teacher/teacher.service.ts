@@ -2,14 +2,15 @@ import { Injectable } from '@nestjs/common';
 import { InjectModel } from '@nestjs/mongoose';
 import { Model } from 'mongoose';
 import { Student, Subject, Teacher, TeacherDocument, User } from 'src/schemas';
-import { UpdateTeacherDto } from './dto';
-import { CreateTeacherDto } from './dto/create-teacher.dto';
+import { AssignTeacherToSubjectDto, UpdateTeacherDto } from './dto';
 
 @Injectable()
 export class TeacherService {
   constructor(
     @InjectModel(Teacher.name)
     private readonly teacherModel: Model<TeacherDocument>,
+    @InjectModel(Subject.name)
+    private readonly subjectModel: Model<TeacherDocument>,
   ) {}
 
   // async create(
@@ -41,6 +42,7 @@ export class TeacherService {
     teacher.email = updateTeacherDto.email;
     teacher.name = updateTeacherDto.name;
     teacher.lastName = updateTeacherDto.lastName;
+    teacher.subjects.push(...updateTeacherDto.subjects);
 
     teacher.save();
     return teacher;
@@ -52,5 +54,20 @@ export class TeacherService {
       .populate('subjects');
 
     return teacher.subjects;
+  }
+
+  public async assignToSubject(
+    assignTeacherToSubjectDto: AssignTeacherToSubjectDto,
+    teacherId: string,
+  ): Promise<Student> {
+    const { subjectId } = assignTeacherToSubjectDto;
+
+    const subject = await this.subjectModel.findById(subjectId);
+    const student = await this.teacherModel.findOneAndUpdate(
+      { _id: teacherId },
+      { $push: { subjects: subject } },
+    );
+
+    return student;
   }
 }

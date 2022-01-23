@@ -5,7 +5,7 @@ https://docs.nestjs.com/modules
 
 import { Module } from '@nestjs/common';
 import { MongooseModule } from '@nestjs/mongoose';
-import { Teacher, TeacherSchema } from 'src/schemas';
+import { Subject, SubjectSchema, Teacher, TeacherSchema } from 'src/schemas';
 import { TeacherService } from './teacher.service';
 
 @Module({
@@ -14,6 +14,10 @@ import { TeacherService } from './teacher.service';
       {
         name: Teacher.name,
         schema: TeacherSchema,
+      },
+      {
+        name: Subject.name,
+        schema: SubjectSchema,
       },
     ]),
   ],
