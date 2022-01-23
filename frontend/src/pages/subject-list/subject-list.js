@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from "react";
 import { Button } from "devextreme-react/button";
-import "./user-list.scss";
+import "./subject-list.scss";
 import UserPopup from "../../components/user-popup/user-popup";
 import DataGrid, {
   Column,
@@ -16,7 +16,7 @@ import TeacherSevice from "../../api/teacher.service";
 import StudentSevice from "../../api/student.service";
 import formatCaps from "../../utils/format-caps";
 
-export default function UserList() {
+export default function SubjectList() {
   const [users, setUsers] = useState([]);
   const [isPopupVisible, setIsPopupVisible] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
@@ -30,7 +30,9 @@ export default function UserList() {
       setIsLoading(true);
       Promise.all([t, s])
         .then((responses) => {
-          setUsers(responses.map((r) => r.data).flat(1));
+          const data = responses.map((r) => r.data).flat(1);
+          console.log("data", data);
+          setUsers(data);
         })
         .catch((err) => {
           notify(err?.message || "Unable to download users", "error", 2000);
@@ -38,6 +40,7 @@ export default function UserList() {
         })
         .finally(() => {
           setIsLoading(false);
+          console.log("users", users);
         });
     };
 
@@ -48,13 +51,13 @@ export default function UserList() {
     <React.Fragment>
       <div className="header">
         <h2 className={"content-block"}>
-          User list
+          Subject list
           {isLoading && (
             <LoadIndicator id="small-indicator" height={20} width={20} style={{ marginLeft: 10 }} />
           )}
         </h2>
         <Button
-          text="Add user"
+          text="Add subject"
           type="normal"
           className="content-block"
           onClick={() => setIsPopupVisible(true)}

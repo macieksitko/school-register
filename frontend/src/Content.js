@@ -4,7 +4,7 @@ import appInfo from "./app-info";
 import routes from "./app-routes";
 import { SideNavOuterToolbar as SideNavBarLayout } from "./layouts";
 import { Footer } from "./components";
-import { HOME } from "./utils/pages-routes";
+import { HOME } from "./app-routes";
 import { useAuth } from "./contexts/auth";
 
 export default function Content() {

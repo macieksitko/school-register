@@ -1,7 +1,7 @@
 import React, { useState, useEffect, createContext, useContext, useCallback } from "react";
 import AuthService from "../api/auth.service";
 import TokenService from "../api/token.service";
-import { getRoutesForRole } from "../utils/pages-routes";
+import { getRoutesForRole } from "../app-routes";
 
 function AuthProvider(props) {
   const [user, setUser] = useState();
@@ -9,11 +9,18 @@ function AuthProvider(props) {
   const [role, setRole] = useState();
   const [routes, setRoutes] = useState([]);
 
+  const save = (userData) => {
+    const { role: r } = userData.user;
+    setRoutes(getRoutesForRole(r));
+    setRole(r);
+    setUser(userData);
+  };
+
   useEffect(() => {
     (async function () {
       const result = await TokenService.getUser();
       if (result?.access_token) {
-        setUser(result);
+        save(result);
       }
 
       setLoading(false);
@@ -23,10 +30,7 @@ function AuthProvider(props) {
   const signIn = useCallback(async (email, password) => {
     const result = await AuthService.login(email, password);
     if (result?.access_token) {
-      const { role: r } = result.user;
-      setRoutes(getRoutesForRole(r));
-      setRole(r);
-      setUser(result);
+      save(result);
     }
 
     return result;

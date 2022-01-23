@@ -1,6 +1,6 @@
 import React, { useEffect, useRef, useCallback, useMemo } from "react";
 import TreeView from "devextreme-react/tree-view";
-import { navigation } from "../../app-navigation";
+import { sideBarNavigation } from "../../app-routes";
 import { useNavigation } from "../../contexts/navigation";
 import { useScreenSize } from "../../utils/media-query";
 import "./side-navigation-menu.scss";
@@ -13,7 +13,7 @@ export default function SideNavigationMenu(props) {
   const { routes } = useAuth();
   const { isLarge } = useScreenSize();
   function normalizePath() {
-    return navigation
+    return sideBarNavigation
       .filter(({ path }) => routes.includes(path))
       .map((item) => {
         if (item.path && !/^\//.test(item.path)) {

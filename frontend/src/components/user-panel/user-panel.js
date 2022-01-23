@@ -4,7 +4,7 @@ import ContextMenu, { Position } from "devextreme-react/context-menu";
 import List from "devextreme-react/list";
 import { useAuth } from "../../contexts/auth";
 import "./user-panel.scss";
-import { PROFILE } from "../../utils/pages-routes";
+import { PROFILE } from "../../app-routes";
 import formatCaps from "../../utils/format-caps";
 
 export default function UserPanel({ menuMode }) {
