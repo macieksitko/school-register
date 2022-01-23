@@ -4,13 +4,15 @@ import ContextMenu, { Position } from "devextreme-react/context-menu";
 import List from "devextreme-react/list";
 import { useAuth } from "../../contexts/auth";
 import "./user-panel.scss";
+import { PROFILE } from "../../app-routes";
+import formatCaps from "../../utils/format-caps";
 
 export default function UserPanel({ menuMode }) {
   const { user, signOut } = useAuth();
   const history = useHistory();
 
   function navigateToProfile() {
-    history.push("/profile");
+    history.push(PROFILE);
   }
   const menuItems = useMemo(
     () => [
@@ -28,12 +30,15 @@ export default function UserPanel({ menuMode }) {
     [signOut]
   );
 
+  const {
+    user: { name, lastName, role },
+  } = user;
+
   return (
     <div className={"user-panel"}>
       <div className={"user-info"}>
-        <div className={"image-container"}>
-        </div>
-        <div className={"user-name"}>{user.user.username} Role: {user.user.role}</div>
+        <div className={"image-container"}></div>
+        <div className={"user-name"}>{`${name} ${lastName} (${formatCaps(role)})`}</div>
       </div>
 
       {menuMode === "context" && (

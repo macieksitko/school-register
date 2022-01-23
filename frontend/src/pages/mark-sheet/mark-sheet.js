@@ -24,9 +24,10 @@ export default function MarkSheet() {
       <div className="header">
         <h2 className={"content-block"}>Mark-Sheet</h2>
         <Button
-          text="Add mark"
+          text="Add new mark"
           disabled={!allSelected}
           type="normal"
+          icon="add"
           className="content-block"
           onClick={() => setIsPopupVisible(true)}
         />

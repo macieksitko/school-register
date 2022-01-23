@@ -19,6 +19,6 @@ jobs:
           heroku_app_name: ${{ secrets.HEROKU_NESTJS_APP_NAME }}
           dockerfile_directory: ./backend
           dockerfile_name: Dockerfile
-          docker_options: --build-arg profile=dev
+          docker_options: --build-arg profile=prod
 
           process_type: web

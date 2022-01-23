@@ -37,7 +37,7 @@ export default function MarkPopup({ isVisible, onClose, onSave, studentName }) {
     <Popup
       visible={isVisible}
       onHiding={onClose}
-      dragEnabled={false}
+      dragEnabled={true}
       closeOnOutsideClick
       showCloseButton
       showTitle

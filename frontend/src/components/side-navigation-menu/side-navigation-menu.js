@@ -1,23 +1,26 @@
 import React, { useEffect, useRef, useCallback, useMemo } from "react";
 import TreeView from "devextreme-react/tree-view";
-import { navigation } from "../../app-navigation";
+import { sideBarNavigation } from "../../app-routes";
 import { useNavigation } from "../../contexts/navigation";
 import { useScreenSize } from "../../utils/media-query";
 import "./side-navigation-menu.scss";
 
 import * as events from "devextreme/events";
+import { useAuth } from "../../contexts/auth";
 
 export default function SideNavigationMenu(props) {
   const { children, selectedItemChanged, openMenu, compactMode, onMenuReady } = props;
-
+  const { routes } = useAuth();
   const { isLarge } = useScreenSize();
   function normalizePath() {
-    return navigation.map((item) => {
-      if (item.path && !/^\//.test(item.path)) {
-        item.path = `/${item.path}`;
-      }
-      return { ...item, expanded: isLarge };
-    });
+    return sideBarNavigation
+      .filter(({ path }) => routes.includes(path))
+      .map((item) => {
+        if (item.path && !/^\//.test(item.path)) {
+          item.path = `/${item.path}`;
+        }
+        return { ...item, expanded: isLarge };
+      });
   }
 
   const items = useMemo(

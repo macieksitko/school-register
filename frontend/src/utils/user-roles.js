@@ -1,5 +1,3 @@
-export default {
-  teacher: "TEACHER",
-  student: "STUDENT",
-  admin: "ADMIN",
-};
+export const TEACHER = "TEACHER";
+export const STUDENT = "STUDENT";
+export const ADMIN = "ADMIN";

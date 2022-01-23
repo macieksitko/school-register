@@ -1,7 +1,6 @@
 import React, { useEffect, useState } from "react";
 import { Button } from "devextreme-react/button";
-import "./user-list.scss";
-import UserPopup from "../../components/user-popup/user-popup";
+import "./subject-list.scss";
 import DataGrid, {
   Column,
   Export,
@@ -13,33 +12,42 @@ import DataGrid, {
 import notify from "devextreme/ui/notify";
 import { LoadIndicator } from "devextreme-react/load-indicator";
 import TeacherSevice from "../../api/teacher.service";
-import StudentSevice from "../../api/student.service";
-import formatCaps from "../../utils/format-caps";
-import UserSubjectList from "./user-subject-list";
+import SubjectService from "../../api/subject.service";
+import SubjectPopup from "../../components/subject-popup/subject-popup";
+import TeachersList from "./teachers-list";
 
-export default function UserList() {
-  const [users, setUsers] = useState([]);
+export default function SubjectList() {
+  const [teachers, setTeachers] = useState([]);
+  const [subjects, setSubjects] = useState([]);
   const [isPopupVisible, setIsPopupVisible] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
   const [reload, setReload] = useState(false);
 
   useEffect(() => {
     const fetchData = async () => {
-      const t = TeacherSevice.getTeachers();
-      const s = StudentSevice.getStudents();
-
       setIsLoading(true);
-      Promise.all([t, s])
-        .then((responses) => {
-          setUsers(responses.map((r) => r.data).flat(1));
+      TeacherSevice.getTeachers()
+        .then(({ data }) => {
+          const mappedTeachers = data.map(({ _id, name, lastName, email }) => ({
+            _id,
+            description: `${name} ${lastName} (${email})`,
+          }));
+          setTeachers(mappedTeachers);
         })
         .catch((err) => {
-          notify(err?.message || "Unable to download users", "error", 2000);
-          setUsers([]);
+          notify(err?.message || "Unable to download teachers", "error", 2000);
+          setTeachers([]);
         })
+        .then(() =>
+          SubjectService.getSubjects()
+            .then(({ data }) => setSubjects(data))
+            .catch((err) => {
+              notify(err?.message || "Unable to download subjects", "error", 2000);
+              setSubjects([]);
+            })
+        )
         .finally(() => {
           setIsLoading(false);
-          console.log("users", users);
         });
     };
 
@@ -50,41 +58,39 @@ export default function UserList() {
     <React.Fragment>
       <div className="header">
         <h2 className={"content-block"}>
-          User list
+          Subject list
           {isLoading && (
             <LoadIndicator id="small-indicator" height={20} width={20} style={{ marginLeft: 10 }} />
           )}
         </h2>
         <Button
-          text="Add new user"
+          text="Add new subject"
           type="normal"
-          icon="add"
           className="content-block"
+          icon="add"
           onClick={() => setIsPopupVisible(true)}
         />
       </div>
       <DataGrid
         id="gridContainer"
-        dataSource={users}
+        dataSource={subjects}
         keyExpr="_id"
         showBorders
         style={{ padding: "0px 20px" }}
       >
         <Selection mode="multiple" />
         <GroupPanel visible={true} />
-        <Column caption="First Name" dataField="name" width={250} />
-        <Column caption="Last Name" dataField="lastName" width={250} />
-        <Column caption="Mail" dataField="email" width={200} />
+        <Column caption="Subject Name" dataField="name" width={300} />
         <Column
-          caption="Role"
-          dataField="role"
-          cellRender={({ value }) => (value ? formatCaps(value) : "")}
-          width={100}
+          caption="Creation Date"
+          dataField="creationDate"
+          width={150}
+          cellRender={({ value }) => new Date(value).toDateString()}
         />
         <Column
-          caption="Subjects"
-          dataField="subjects"
-          cellRender={({ value }) => <UserSubjectList cells={value} />}
+          caption="Teachers"
+          dataField="teachers"
+          cellRender={({ value }) => <TeachersList cells={value} teachers={teachers} />}
         />
         <Export enabled={true} allowExportSelectedData={true} />
         <Pager
@@ -96,8 +102,9 @@ export default function UserList() {
         <Paging defaultPageSize={5} />
       </DataGrid>
       {isPopupVisible && (
-        <UserPopup
+        <SubjectPopup
           key={reload ? 1 : 0}
+          teachers={teachers}
           isVisible={isPopupVisible}
           onClose={() => setIsPopupVisible(false)}
           onSave={() => {
