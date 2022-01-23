@@ -15,6 +15,7 @@ import { LoadIndicator } from "devextreme-react/load-indicator";
 import TeacherSevice from "../../api/teacher.service";
 import StudentSevice from "../../api/student.service";
 import formatCaps from "../../utils/format-caps";
+import UserSubjectList from "./user-subject-list";
 
 export default function UserList() {
   const [users, setUsers] = useState([]);
@@ -83,7 +84,7 @@ export default function UserList() {
         <Column
           caption="Subjects"
           dataField="subjects"
-          cellRender={({ value }) => (value.length !== 0 ? value.map((x) => x.name) : "-")}
+          cellRender={({ value }) => <UserSubjectList cells={value} />}
         />
         <Export enabled={true} allowExportSelectedData={true} />
         <Pager

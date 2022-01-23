@@ -14,6 +14,7 @@ import { LoadIndicator } from "devextreme-react/load-indicator";
 import TeacherSevice from "../../api/teacher.service";
 import SubjectService from "../../api/subject.service";
 import SubjectPopup from "../../components/subject-popup/subject-popup";
+import TeachersList from "./teachers-list";
 
 export default function SubjectList() {
   const [teachers, setTeachers] = useState([]);
@@ -89,12 +90,7 @@ export default function SubjectList() {
         <Column
           caption="Teachers"
           dataField="teachers"
-          cellRender={({ value }) => {
-            console.log(value);
-            return value.length !== 0 && teachers
-              ? value.map((teacherId) => teachers.find(({ _id }) => _id === teacherId)?.description)
-              : "-";
-          }}
+          cellRender={({ value }) => <TeachersList cells={value} teachers={teachers} />}
         />
         <Export enabled={true} allowExportSelectedData={true} />
         <Pager
