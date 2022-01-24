@@ -13,7 +13,6 @@ export default function SubjectPopup({ teachers, onClose, onSave }) {
   const [subjectData, setSubjectData] = useState({
     name: "",
     teacherIds: [],
-    courseId: "61ed3307f1ed01616a1db35b",
   });
   const [selected, setSelected] = useState([]);
 
@@ -115,15 +114,6 @@ export default function SubjectPopup({ teachers, onClose, onSave }) {
                   }}
                 />
               </DropDownBox>
-            </div>
-          </div>
-          <div className="dx-field">
-            <div className="dx-field-label">subject id do wyjebania</div>
-            <div className="dx-field-value">
-              <TextBox
-                value={subjectData.courseId}
-                onValueChanged={({ value }) => setSubjectData({ ...subjectData, courseId: value })}
-              />
             </div>
           </div>
         </div>
