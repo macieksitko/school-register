@@ -4,7 +4,7 @@ https://docs.nestjs.com/controllers#controllers
 
 import { Body, Controller, Get, Param, Put } from '@nestjs/common';
 import { ApiBearerAuth, ApiBody, ApiTags } from '@nestjs/swagger';
-import { UpdateTeacherDto } from './dto';
+import { AssignTeacherToSubjectDto, UpdateTeacherDto } from './dto';
 import { TeacherService } from './teacher.service';
 
 @ApiTags('teachers')
@@ -35,5 +35,16 @@ export class TeacherController {
     @Body() updateTeacherDto: UpdateTeacherDto,
   ) {
     return this.teacherService.update(updateTeacherDto, teacherId);
+  }
+
+  @Put('/:teacherId/assign-subject')
+  public async assignStudentToSubject(
+    @Body() assignTeacherToSubjectDto: AssignTeacherToSubjectDto,
+    @Param('teacherId') teacherId: string,
+  ) {
+    return this.teacherService.assignToSubject(
+      assignTeacherToSubjectDto,
+      teacherId,
+    );
   }
 }

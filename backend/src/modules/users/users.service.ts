@@ -1,6 +1,10 @@
-import { BadRequestException, Injectable, Logger } from '@nestjs/common';
+import {
+  BadRequestException,
+  Injectable,
+  Logger,
+  OnApplicationBootstrap,
+} from '@nestjs/common';
 import { InjectModel } from '@nestjs/mongoose';
-import { Request } from 'express';
 import { Model } from 'mongoose';
 import { PasswordService } from 'src/auth/password/password.service';
 import { Role } from 'src/auth/roles/role.enum';
@@ -14,7 +18,7 @@ import { User, UserDocument } from 'src/schemas/user.schema';
 import { CreateUserDto } from './dto/create-user.dto';
 
 @Injectable()
-export class UsersService {
+export class UsersService implements OnApplicationBootstrap {
   private readonly logger;
   constructor(
     @InjectModel(User.name) private readonly userModel: Model<UserDocument>,
@@ -26,6 +30,30 @@ export class UsersService {
     private passwordService: PasswordService,
   ) {
     this.logger = new Logger('Users');
+  }
+
+  async onApplicationBootstrap(): Promise<void> {
+    const defaultUserExists = await this.userExists('admin');
+    if (defaultUserExists) {
+      this.logger.log(
+        `Default 'admin' user already exists, skipping its creation process`,
+      );
+      return;
+    }
+    const defaultUser: CreateUserDto = {
+      username: 'admin',
+      email: 'example@domain.com',
+      password: Math.random().toString(36).slice(2),
+      role: Role.Admin,
+      name: 'admin',
+      lastName: 'admin',
+    };
+
+    const { username }: User = await this.createAdmin(defaultUser);
+
+    this.logger.log(
+      `Created default user ${username} with password ${defaultUser.password}, please use this credentials for first login and immediately change your password`,
+    );
   }
 
   public async userExists(usernameOrEmail: string): Promise<boolean> {
@@ -99,12 +127,12 @@ export class UsersService {
       .lean();
   }
 
-  async createAdmin(createUserDto: CreateUserDto, param2) {
+  async createAdmin(createUserDto: CreateUserDto, creatorId?: string) {
     const user: User = {
       ...createUserDto,
       password: await this.passwordService.hash(createUserDto.password),
       creationDate: new Date(),
-      createdBy: param2
+      createdBy: creatorId,
     };
     const createdUser = (await this.userModel.create(user)).populate(
       'createdBy',

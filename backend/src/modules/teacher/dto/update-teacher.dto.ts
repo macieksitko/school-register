@@ -1,24 +1,28 @@
+import { ApiProperty } from '@nestjs/swagger';
 import { IsEmail, IsEnum, IsOptional, IsString } from 'class-validator';
 import { Role } from 'src/auth/roles/role.enum';
 import { Subject } from 'src/schemas';
 
 export class UpdateTeacherDto {
   @IsOptional()
-  @IsEmail(IsEmail, { message: 'Provide valid e-mail address' })
+  @ApiProperty()
   readonly email?: string;
 
   @IsOptional()
-  @IsEnum(Role, { message: `Role can be one of ${Object.values(Role)}` })
+  @ApiProperty()
   readonly role?: Role;
 
   @IsOptional()
+  @ApiProperty()
   @IsString()
   readonly name?: string;
 
   @IsOptional()
+  @ApiProperty()
   @IsString()
   readonly lastName?: string;
 
   @IsOptional()
+  @ApiProperty()
   readonly subjects?: Subject[];
 }
