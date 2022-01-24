@@ -72,6 +72,7 @@ export default function SubjectList() {
         />
       </div>
       <DataGrid
+        className="datagrid"
         id="gridContainer"
         dataSource={subjects}
         keyExpr="_id"
@@ -80,7 +81,7 @@ export default function SubjectList() {
       >
         <Selection mode="multiple" />
         <GroupPanel visible={true} />
-        <Column caption="Subject Name" dataField="name" width={300} />
+        <Column caption="Subject Name" dataField="name" />
         <Column
           caption="Creation Date"
           dataField="creationDate"

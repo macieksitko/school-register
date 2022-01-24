@@ -64,6 +64,7 @@ export default function UserList() {
         />
       </div>
       <DataGrid
+        className="datagrid"
         id="gridContainer"
         dataSource={users}
         keyExpr="_id"
@@ -72,9 +73,9 @@ export default function UserList() {
       >
         <Selection mode="multiple" />
         <GroupPanel visible={true} />
-        <Column caption="First Name" dataField="name" width={250} />
-        <Column caption="Last Name" dataField="lastName" width={250} />
-        <Column caption="Mail" dataField="email" width={200} />
+        <Column caption="First Name" dataField="name" />
+        <Column caption="Last Name" dataField="lastName" />
+        <Column caption="Mail" dataField="email" />
         <Column
           caption="Role"
           dataField="role"
