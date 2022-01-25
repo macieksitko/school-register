@@ -6,9 +6,9 @@ import notify from "devextreme/ui/notify";
 import { LoadIndicator } from "devextreme-react/load-indicator";
 import { List } from "devextreme-react/list";
 import subjectService from "../../api/subject.service";
-import "./subject-popup.scss";
+import "./add-subject-popup.scss";
 
-export default function SubjectPopup({ teachers, onClose, onSave }) {
+export default function AddSubjectPopup({ teachers, onClose, onSave }) {
   const [isLoading, setIsLoading] = useState(false);
   const [subjectData, setSubjectData] = useState({
     name: "",

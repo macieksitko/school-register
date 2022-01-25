@@ -8,32 +8,38 @@ import DataGrid, {
   Pager,
   Paging,
   GroupPanel,
+  ColumnFixing,
 } from "devextreme-react/data-grid";
 import notify from "devextreme/ui/notify";
 import { LoadIndicator } from "devextreme-react/load-indicator";
 import TeacherSevice from "../../api/teacher.service";
 import SubjectService from "../../api/subject.service";
-import SubjectPopup from "../../components/subject-popup/subject-popup";
+import AddSubjectPopup from "../../components/add-subject-popup/add-subject-popup";
 import TeachersList from "./teachers-list";
+import AddStudentsButton from "./add-students-button/add-students-button";
+import AddStudentsPopup from "../../components/add-students-popup/add-students-popup";
+import studentService from "../../api/student.service";
 
 export default function SubjectList() {
   const [teachers, setTeachers] = useState([]);
   const [subjects, setSubjects] = useState([]);
-  const [isPopupVisible, setIsPopupVisible] = useState(false);
+  const [students, setStudents] = useState([]);
+  const [isSubjectPopupVisible, setIsSubjectPopupVisible] = useState(false);
+  const [isStudentsPopupVisible, setIsStudentsPopupVisible] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
   const [reload, setReload] = useState(false);
+  const [subjectId, setSubjectId] = useState("");
+
+  const mapUserAccount = ({ _id, name, lastName, email }) => ({
+    _id,
+    description: `${name} ${lastName} (${email})`,
+  });
 
   useEffect(() => {
     const fetchData = async () => {
       setIsLoading(true);
       TeacherSevice.getTeachers()
-        .then(({ data }) => {
-          const mappedTeachers = data.map(({ _id, name, lastName, email }) => ({
-            _id,
-            description: `${name} ${lastName} (${email})`,
-          }));
-          setTeachers(mappedTeachers);
-        })
+        .then(({ data }) => setTeachers(data.map(mapUserAccount)))
         .catch((err) => {
           notify(err?.message || "Unable to download teachers", "error", 2000);
           setTeachers([]);
@@ -44,6 +50,15 @@ export default function SubjectList() {
             .catch((err) => {
               notify(err?.message || "Unable to download subjects", "error", 2000);
               setSubjects([]);
+            })
+        )
+        .then(() =>
+          studentService
+            .getStudents()
+            .then(({ data }) => setStudents(data.map(mapUserAccount)))
+            .catch((err) => {
+              notify(err?.message || "Unable to download students", "error", 2000);
+              setStudents([]);
             })
         )
         .finally(() => {
@@ -68,7 +83,7 @@ export default function SubjectList() {
           type="normal"
           className="content-block"
           icon="add"
-          onClick={() => setIsPopupVisible(true)}
+          onClick={() => setIsSubjectPopupVisible(true)}
         />
       </div>
       <DataGrid
@@ -79,6 +94,7 @@ export default function SubjectList() {
         showBorders
         style={{ padding: "0px 20px" }}
       >
+        <ColumnFixing enabled={true} />
         <Selection mode="multiple" />
         <GroupPanel visible={true} />
         <Column caption="Subject Name" dataField="name" />
@@ -93,6 +109,19 @@ export default function SubjectList() {
           dataField="teachers"
           cellRender={({ value }) => <TeachersList cells={value} teachers={teachers} />}
         />
+        <Column
+          caption="Add Students"
+          dataField="_id"
+          width={120}
+          cellRender={({ value }) => (
+            <AddStudentsButton
+              onClick={() => {
+                setSubjectId(value);
+                setIsStudentsPopupVisible(true);
+              }}
+            />
+          )}
+        />
         <Export enabled={true} allowExportSelectedData={true} />
         <Pager
           allowedPageSizes={[5, 10, 25, 50]}
@@ -102,16 +131,25 @@ export default function SubjectList() {
         />
         <Paging defaultPageSize={5} />
       </DataGrid>
-      {isPopupVisible && (
-        <SubjectPopup
-          key={reload ? 1 : 0}
+      {isSubjectPopupVisible && (
+        <AddSubjectPopup
           teachers={teachers}
-          isVisible={isPopupVisible}
-          onClose={() => setIsPopupVisible(false)}
+          onClose={() => setIsSubjectPopupVisible(false)}
           onSave={() => {
             setReload(!reload);
-            setIsPopupVisible(false);
+            setIsSubjectPopupVisible(false);
           }}
+        />
+      )}
+      {isStudentsPopupVisible && subjectId && (
+        <AddStudentsPopup
+          students={students}
+          subjectId={subjectId}
+          onSave={() => {
+            setReload(!reload);
+            setIsStudentsPopupVisible(false);
+          }}
+          onClose={() => setIsStudentsPopupVisible(false)}
         />
       )}
     </React.Fragment>

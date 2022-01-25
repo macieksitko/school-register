@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 import { Popup, ToolbarItem } from "devextreme-react/popup";
-import "./user-popup.scss";
+import "./add-user-popup.scss";
 import TextBox from "devextreme-react/text-box";
 import SelectBox from "devextreme-react/select-box";
 import { STUDENT, TEACHER } from "../../utils/user-roles";
@@ -9,7 +9,7 @@ import notify from "devextreme/ui/notify";
 import { LoadIndicator } from "devextreme-react/load-indicator";
 import formatCaps from "../../utils/format-caps";
 
-export default function UserPopup({ onClose, onSave }) {
+export default function AddUserPopup({ onClose, onSave }) {
   const roles = [TEACHER, STUDENT].map((r) => formatCaps(r));
   const [isLoading, setIsLoading] = useState(false);
   const [repeatedPassword, setRepeatedPassword] = useState("");

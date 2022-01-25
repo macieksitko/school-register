@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from "react";
 import { Button } from "devextreme-react/button";
 import "./user-list.scss";
-import UserPopup from "../../components/user-popup/user-popup";
+import AddUserPopup from "../../components/add-user-popup/add-user-popup";
 import DataGrid, {
   Column,
   Export,
@@ -9,6 +9,7 @@ import DataGrid, {
   Pager,
   Paging,
   GroupPanel,
+  ColumnFixing,
 } from "devextreme-react/data-grid";
 import notify from "devextreme/ui/notify";
 import { LoadIndicator } from "devextreme-react/load-indicator";
@@ -72,6 +73,7 @@ export default function UserList() {
         style={{ padding: "0px 20px" }}
       >
         <Selection mode="multiple" />
+        <ColumnFixing enabled={true} />
         <GroupPanel visible={true} />
         <Column caption="First Name" dataField="name" />
         <Column caption="Last Name" dataField="lastName" />
@@ -97,7 +99,7 @@ export default function UserList() {
         <Paging defaultPageSize={5} />
       </DataGrid>
       {isPopupVisible && (
-        <UserPopup
+        <AddUserPopup
           key={reload ? 1 : 0}
           isVisible={isPopupVisible}
           onClose={() => setIsPopupVisible(false)}
