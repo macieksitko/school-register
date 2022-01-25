@@ -63,7 +63,7 @@ export class SubjectService {
 
     const students = await this.studentModel.find({
       subjects: subject,
-    });
+    }).populate('marks');
 
     return students;
   }
