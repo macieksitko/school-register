@@ -5,6 +5,9 @@ class SubjectService {
     return api.get("/api/subject");
   }
 
+  getSubjectsStudent(id) {
+    return api.get("/api/subject/" + id + "/students")
+  }
   async addSubject(body) {
     try {
       const response = await api.post("/api/subject", body, {

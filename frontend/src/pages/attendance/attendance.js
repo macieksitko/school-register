@@ -19,14 +19,14 @@ class Attendance extends React.Component {
                 sub.term1Grades = marks.filter((mark) => { return (mark.markType === MarkTypes.UNIT) && (mark.termNumber === 1) && (mark.subject === idSubject); });
                 sub.term2Grades = marks.filter((mark) => { return (mark.markType === MarkTypes.UNIT) && (mark.termNumber === 2) && (mark.subject === idSubject); });
 
-                sub.term1Grade = marks.filter((mark) => { return (mark.markType === MarkTypes.TERM1) && (mark.subject === idSubject); })[0];
+                sub.term1Grade = marks.filter((mark) => { return (mark.markType === MarkTypes.TERM1) && (mark.subject === idSubject); })[0]?.grade;
                 // TODO maybe: sub.term1Avg = ;
 
-                sub.term2Grade = marks.filter((mark) => { return (mark.markType === MarkTypes.TERM2) && (mark.subject === idSubject); })[0];
+                sub.term2Grade = marks.filter((mark) => { return (mark.markType === MarkTypes.TERM2) && (mark.subject === idSubject); })[0]?.grade;
                 // TODO maybe: sub.term2Avg = ;
 
                 // TODO maybe: sub.finalAvg = ;
-                sub.finalGrade = marks.filter((mark) => { return (mark.markType === MarkTypes.FINAL) && (mark.subject === idSubject); })[0];
+                sub.finalGrade = marks.filter((mark) => { return (mark.markType === MarkTypes.FINAL) && (mark.subject === idSubject); })[0]?.grade;
             }
             this.setState({
                 subjects: subjects
