@@ -6,8 +6,10 @@ import "./mark-sheet.scss";
 import MarkPopup from "../../components/mark-popup/mark-popup";
 import TeacherSevice from "../../api/teacher.service";
 import TokenService from "../../api/token.service";
+import StudentService from "../../api/student.service";
 import SubjectService from "../../api/subject.service";
 import {MarkTypes} from "../../enums/markTypes";
+import notify from "devextreme/ui/notify";
 
 export default function MarkSheet() {
   const [subjects, setSubjects] = useState([]);
@@ -24,6 +26,8 @@ export default function MarkSheet() {
           TeacherSevice.getTeacherSubjects(TokenService.getUserId()).then(({ data })  => {
               console.log(data);
               setSubjects(data);
+          }).catch((err) => {
+              notify("Something went wrong", "error", 2000);
           });
       };
 
@@ -57,6 +61,18 @@ export default function MarkSheet() {
                 studentsWithMarks.push(newStudent);
             }
             setStudentsWithMarks(studentsWithMarks);
+        }).catch((err) => {
+            notify("Something went wrong", "error", 2000);
+        });
+    }
+
+    function addMark(data) {
+        data.subjectId = selectedSubject;
+        StudentService.addStudentMark(data.selectedStudent, data).then(() => {
+            notify("Grade added", "success", 2500);
+            fetchStudentData(selectedSubject);
+        }).catch((err) => {
+            notify("Something went wrong", "error", 2000);
         });
     }
 
@@ -90,8 +106,8 @@ export default function MarkSheet() {
         isVisible={isPopupVisible}
         onClose={() => setIsPopupVisible(false)}
         onSave={(data) => {
-          window.alert(JSON.stringify(data));
-          setIsPopupVisible(false);
+            addMark(data);
+            setIsPopupVisible(false);
         }}
       />
     </React.Fragment>

@@ -5,9 +5,10 @@ import RadioGroup from "devextreme-react/radio-group";
 import TextArea from "devextreme-react/text-area";
 import "./mark-popup.scss";
 import SelectBox from "devextreme-react/select-box";
+import notify from "devextreme/ui/notify";
 
 export default function MarkPopup({ isVisible, onClose, onSave, students }) {
-  const defaultMark = { mark: 3, weight: 1, comment: "", termNumber: 1, markType: "UNIT", selectedStudent: "" };
+  const defaultMark = { grade: 3, weight: 1, comment: "", termNumber: 1, markType: "UNIT", selectedStudent: "" };
   const [markData, setMarkData] = useState(defaultMark);
 
   const closeButton = {
@@ -23,8 +24,12 @@ export default function MarkPopup({ isVisible, onClose, onSave, students }) {
     icon: "check",
     text: "Save",
     onClick: () => {
-      onSave(markData);
-      setMarkData(defaultMark);
+      if (markData.selectedStudent) {
+        onSave(markData);
+        setMarkData(defaultMark);
+      } else {
+        notify("Select student", "error", 2000);
+      }
     },
   };
 
@@ -41,8 +46,8 @@ export default function MarkPopup({ isVisible, onClose, onSave, students }) {
 
   const markTypes = [
     { id: "UNIT", text: "Unit"},
-    { id: "TERM1", text: "Term 1"},
-    { id: "TERM2", text: "Term 2"},
+    { id: "TERM1", text: "Term 1 final"},
+    { id: "TERM2", text: "Term 2 final"},
     { id: "FINAL", text: "Final"},
   ]
 
@@ -73,6 +78,7 @@ export default function MarkPopup({ isVisible, onClose, onSave, students }) {
                 valueExpr="_id"
                 displayExpr="name"
                 placeholder="Select student..."
+                value={markData.selectedStudent}
                 onValueChanged={({ value }) => setMarkData({ ...markData, selectedStudent: value })}
                 searchEnabled
               />
@@ -86,8 +92,8 @@ export default function MarkPopup({ isVisible, onClose, onSave, students }) {
                 max={6}
                 showSpinButtons
                 defaultValue={3}
-                value={markData.mark}
-                onValueChanged={({ value }) => setMarkData({ ...markData, mark: value })}
+                value={markData.grade}
+                onValueChanged={({ value }) => setMarkData({ ...markData, grade: value })}
               />
             </div>
           </div>

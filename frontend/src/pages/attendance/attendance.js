@@ -3,6 +3,7 @@ import StudentService from '../../api/student.service';
 import TokenService from "../../api/token.service";
 import MarkSheetGrid from "../../components/mark-sheet-grid/mark-sheet-grid";
 import {MarkTypes} from "../../enums/markTypes";
+import notify from "devextreme/ui/notify";
 
 class Attendance extends React.Component {
     state = {
@@ -31,6 +32,8 @@ class Attendance extends React.Component {
             this.setState({
                 subjects: subjects
             });
+        }).catch((err) => {
+            notify("Something went wrong", "error", 2000);
         });
     }
     constructor(props) {
