@@ -29,7 +29,7 @@ export class Teacher {
   //Relations
 
   @Prop({ type: mongoose.Schema.Types.ObjectId, ref: 'User' })
-  account: User;
+  account: User | string;
 
   @Prop({
     type: [mongoose.Schema.Types.ObjectId],

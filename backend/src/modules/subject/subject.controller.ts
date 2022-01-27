@@ -6,7 +6,11 @@ import { Body, Controller, Get, Param, Post, Put } from '@nestjs/common';
 import { ApiBearerAuth, ApiBody, ApiTags } from '@nestjs/swagger';
 import { CurrentAccount } from 'src/auth/decorators/current-account.decorator';
 import { UserDocument } from 'src/schemas';
-import { CreateSubjectDto, UpdateSubjectDto } from './dto';
+import {
+  AssignStudentsToSubjectDto,
+  CreateSubjectDto,
+  UpdateSubjectDto,
+} from './dto';
 import { SubjectService } from './subject.service';
 
 @ApiBearerAuth('access-token')
@@ -46,5 +50,16 @@ export class SubjectController {
     @Body() updateSubjectDto: UpdateSubjectDto,
   ) {
     return this.subjectService.update(updateSubjectDto, subjectId);
+  }
+
+  @Post('/:subjectId/students')
+  public async assignStudentsToSubject(
+    @Param('subjectId') subjectId: string,
+    @Body() assignnStudentsToSubject: AssignStudentsToSubjectDto,
+  ) {
+    return this.subjectService.assignStudentsToSubject(
+      assignnStudentsToSubject,
+      subjectId,
+    );
   }
 }

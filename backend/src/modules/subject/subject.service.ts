@@ -10,7 +10,11 @@ import {
   TeacherDocument,
   UserDocument,
 } from 'src/schemas';
-import { CreateSubjectDto, UpdateSubjectDto } from './dto';
+import {
+  AssignStudentsToSubjectDto,
+  CreateSubjectDto,
+  UpdateSubjectDto,
+} from './dto';
 
 @Injectable()
 export class SubjectService {
@@ -61,9 +65,11 @@ export class SubjectService {
   public async findSubjectStudents(subjectId: string): Promise<Student[]> {
     const subject = await this.subjectModel.findById(subjectId);
 
-    const students = await this.studentModel.find({
-      subjects: subject,
-    }).populate('marks');
+    const students = await this.studentModel
+      .find({
+        subjects: subject,
+      })
+      .populate('marks');
 
     return students;
   }
@@ -81,5 +87,21 @@ export class SubjectService {
 
     subject.save();
     return subject;
+  }
+
+  public async assignStudentsToSubject(
+    assignnStudentsToSubjectDto: AssignStudentsToSubjectDto,
+    subjectId: string,
+  ) {
+    const { studentIds } = assignnStudentsToSubjectDto;
+
+    const subject = await this.subjectModel.findById(subjectId);
+
+    await this.studentModel
+      .updateMany(
+        { _id: { $in: studentIds } },
+        { $push: { subjects: subject._id } },
+      )
+      .populate('subjects');
   }
 }
