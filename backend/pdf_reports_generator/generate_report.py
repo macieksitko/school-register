@@ -212,4 +212,4 @@ pdf_path = save_pdf(pdf)
 end_time = perf_counter_ns()
 execution_time = (end_time - start_time) / 1e9
 print(f'Report generated in: {execution_time} seconds')
-print(f'Report saved in {pdf_path}')
+print(f'Report saved in: {pdf_path}')
