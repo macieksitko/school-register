@@ -200,7 +200,7 @@ for document in found_documents:
 
 def save_pdf(pdf):
     pdf.set_author(unidecode(f'{teacher_name} {teacher_last_name}'))
-    pdf.set_title(unidecode(f'Grades report for {subject_name})'))
+    pdf.set_title(unidecode(f'Grades report for {subject_name}'))
     abs_path = os.path.dirname(os.path.abspath(__file__))
     pdf_path = f"{abs_path}/report_{subject_name.replace(' ', '_')}_{generation_time.replace(' ', '_')}.pdf"
     pdf.output(pdf_path, 'F')
