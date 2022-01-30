@@ -31,4 +31,4 @@ COPY package.json ./
 COPY yarn.lock ./
 RUN yarn install --production
 COPY --from=build_stage /school-register-backend/dist ./dist
-CMD ["node", "dist/main"]
+CMD pip3 install -r ./pdf_reports_generator/requirements.txt && node dist/main
