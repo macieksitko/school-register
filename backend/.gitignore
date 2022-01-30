@@ -34,3 +34,7 @@ lerna-debug.log*
 !.vscode/tasks.json
 !.vscode/launch.json
 !.vscode/extensions.json
+
+# Python reports generation script data
+**/pdf_reports_generator/*.pdf
+**/pdf_reports_generator/*.pkl
