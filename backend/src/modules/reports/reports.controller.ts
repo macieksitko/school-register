@@ -3,9 +3,15 @@ import {
   Body,
   Controller,
   Logger,
+  NotFoundException,
   Post,
+  Res,
+  StreamableFile,
+  UnauthorizedException,
 } from '@nestjs/common';
 import { ApiBearerAuth, ApiBody, ApiTags } from '@nestjs/swagger';
+import { createReadStream, existsSync } from 'fs';
+import { basename, dirname, extname } from 'path';
 import { CurrentAccount } from 'src/auth/decorators/current-account.decorator';
 import { Roles } from 'src/auth/decorators/roles.decorator';
 import { Role } from 'src/auth/roles/role.enum';
@@ -20,6 +26,44 @@ import { ReportsError } from './ReportsError';
 export class ReportsController {
   private readonly logger = new Logger(ReportsController.name);
   constructor(private reportsService: ReportsService) {}
+
+  @Roles(Role.Teacher)
+  @Post('/download')
+  public getReportStatus(
+    @Body() { reportPath }: { reportPath: string },
+    @Res({ passthrough: true }) response,
+  ): StreamableFile {
+    this.logger.log(`Received report ${reportPath} download request`);
+    const dir = dirname(reportPath);
+    const fileName = basename(reportPath);
+
+    if (dir !== this.reportsService.getReportsPath()) {
+      this.logger.error(`Cannot download report from path ${dir}`);
+      throw new BadRequestException('This path is not acceptable');
+    }
+
+    if (extname(fileName) !== '.pdf') {
+      this.logger.error(
+        `Cannot download report with extension ${extname(
+          fileName,
+        )}, only PDF files are allowed`,
+      );
+      throw new BadRequestException('This file type is not acceptable');
+    }
+
+    if (!existsSync(reportPath)) {
+      this.logger.error(`Cannot download report, it doesn't exists`);
+      throw new NotFoundException(`This report couldn't be found`);
+    }
+
+    const file = createReadStream(reportPath);
+    response.set({
+      'Content-Type': 'application/octet-stream',
+      'Content-Disposition': `attachment; filename="${fileName}"`,
+    });
+
+    return new StreamableFile(file);
+  }
 
   @Roles(Role.Teacher)
   @ApiBody({ type: GenerateReportDto })

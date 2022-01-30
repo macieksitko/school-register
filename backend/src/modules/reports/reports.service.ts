@@ -28,6 +28,10 @@ export class ReportsService {
 
   constructor(@Inject(TeacherService) private teacherService: TeacherService) {}
 
+  public getReportsPath() {
+    return this.SCRIPT_PATH;
+  }
+
   public async runReportGeneration({
     teacherAccountId,
     subjectId,
