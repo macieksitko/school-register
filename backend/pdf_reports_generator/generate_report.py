@@ -200,11 +200,16 @@ for document in found_documents:
 
 def save_pdf(pdf):
     pdf.set_author(unidecode(f'{teacher_name} {teacher_last_name}'))
-    pdf.set_title(unidecode(f'Grades report for {subject_name})'))    
-    pdf.output(f"report_{subject_name.replace(' ', '_')}_{generation_time.replace(' ', '_')}.pdf", 'F')
+    pdf.set_title(unidecode(f'Grades report for {subject_name})'))
+    abs_path = os.path.dirname(os.path.abspath(__file__))
+    pdf_path = f"{abs_path}/report_{subject_name.replace(' ', '_')}_{generation_time.replace(' ', '_')}.pdf"
+    pdf.output(pdf_path, 'F')
 
-save_pdf(pdf)
+    return pdf_path
+
+pdf_path = save_pdf(pdf)
 
 end_time = perf_counter_ns()
 execution_time = (end_time - start_time) / 1e9
 print(f'Report generated in: {execution_time} seconds')
+print(f'Report saved in {pdf_path}')
