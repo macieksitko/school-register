@@ -30,6 +30,12 @@ export class TeacherService {
     return this.teacherModel.findById(teacherId).populate('subjects');
   }
 
+  async findOneByAccountId(
+    accountId: string,
+  ): Promise<TeacherDocument | undefined> {
+    return this.teacherModel.findOne({ account: accountId });
+  }
+
   async findAll(): Promise<Teacher[]> {
     return this.teacherModel.find().populate('subjects').lean();
   }

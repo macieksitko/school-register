@@ -15,6 +15,7 @@ import { JwtAuthGuard } from './auth/guards/jwt.guard';
 import { RolesGuard } from './auth/guards/roles.guard';
 import { SubjectModule } from './modules/subject/subject.module';
 import { CourseModule } from './modules/course/course.module';
+import { ReportsModule } from './modules/reports/reports.module';
 
 @Module({
   imports: [
@@ -45,6 +46,7 @@ import { CourseModule } from './modules/course/course.module';
     UsersModule,
     PasswordModule,
     AuthModule,
+    ReportsModule,
   ],
   controllers: [AppController],
   providers: [
