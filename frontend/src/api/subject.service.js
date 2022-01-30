@@ -36,6 +36,15 @@ class SubjectService {
       return error.response.data.message;
     }
   }
+
+  async generateReport(subjectId) {
+    try{
+      const response = await api.post(`/api/reports`, {subjectId}, { headers: { 'Content-Type': 'application/json' } });
+      return response;
+    }catch(error) {
+      return error.response.data;
+    }
+  }
 }
 
 export default new SubjectService();

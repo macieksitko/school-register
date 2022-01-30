@@ -11,6 +11,8 @@ import SubjectService from "../../api/subject.service";
 import {MarkTypes} from "../../enums/markTypes";
 import notify from "devextreme/ui/notify";
 
+import api from '../../api/api';
+
 export default function MarkSheet() {
   const [subjects, setSubjects] = useState([]);
   const [students, setStudents] = useState([]);
@@ -18,6 +20,8 @@ export default function MarkSheet() {
   const [selectedSubject, setSelectedSubject] = useState("");
   const [isPopupVisible, setIsPopupVisible] = useState(false);
   const [reload, setReload] = useState(false);
+  const [reportDetails, setReportDetails] = useState({});
+  const [isReportLoading, setIsReportLoading] = useState(false);
 
   const allSelected = selectedSubject !== "";
 
@@ -76,6 +80,42 @@ export default function MarkSheet() {
         });
     }
 
+    const generateReport = async () =>{
+      try {
+        setIsReportLoading(true);
+        const response = await SubjectService.generateReport(selectedSubject);
+        notify(`Report is ready for being downloaded, generation time ${response.data.executionTime}`);
+        setReportDetails(response.data);
+      }catch(error){
+        notify(`Something went wrong`, "error", 2000);
+      } finally{
+        setIsReportLoading(false);
+      }
+    };
+
+    const downloadReport = async () => {
+      try {
+        const response = await api.post(`/api/reports/download`,  { reportPath: reportDetails.reportPath }, {
+          headers: {'Content-Type': 'application/json'},
+          responseType: "blob", 
+        })
+
+        const url = window.URL.createObjectURL(new Blob([response.data]));
+        const link = document.createElement("a");
+        link.href = url;
+        link.setAttribute(
+          "download",
+          reportDetails.reportPath.split('/').pop()
+        );
+        document.body.appendChild(link);
+        link.click();  
+        link.parentNode.removeChild(link);
+        setReportDetails({});
+      }catch(error) {
+        notify(`Something went wrong`, "error", 2000);
+      }
+    }
+
     return (
     <React.Fragment>
       <div className="header">
@@ -88,6 +128,25 @@ export default function MarkSheet() {
           className="content-block"
           onClick={() => setIsPopupVisible(true)}
         />
+        {
+          !!Object.keys(reportDetails).length ? ( <Button
+          text="Download report"
+          type="normal"
+          icon="download"
+          className="content-block"
+          onClick={() => downloadReport()}
+          />
+          ): (
+            <Button
+            text={isReportLoading ? 'Generating report...' : 'Generate report'}
+            disabled={!allSelected}
+            type="normal"
+            icon="download"
+            className="content-block"
+            onClick={() => generateReport()}
+          />
+          )
+        }      
       </div>
       <div className="selectContainer">
         <SelectBox
