@@ -31,6 +31,7 @@ services:
       - DB_ARGS=ssl=false
       - JWT_SECRET=secret
       - JWT_EXPIRATION_TIME=1h
+      - REPORTS_MONGO_DB_URL=mongodb://school_register:school_register@mongodb:27017/school_register?ssl=false
 
     hostname: backend
 
