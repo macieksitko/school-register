@@ -46,7 +46,6 @@ export default function UserPanel({ menuMode }) {
           items={menuItems}
           target={".user-button"}
           showEvent={"dxclick"}
-          width={210}
           cssClass={"user-menu"}
         >
           <Position my={"top center"} at={"bottom center"} />
