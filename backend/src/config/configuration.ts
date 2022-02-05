@@ -1,4 +1,4 @@
-export interface AppConfig {
+interface AppConfig {
   profile: string;
   server: {
     port: number;
