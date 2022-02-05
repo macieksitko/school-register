@@ -1,6 +1,7 @@
 import { Logger, ValidationPipe } from '@nestjs/common';
 import { ConfigService } from '@nestjs/config';
 import { NestFactory } from '@nestjs/core';
+import helmet from 'helmet';
 import { AppModule } from './app.module';
 import swaggerBootstrap from './bootstraps/swagger.bootstrap';
 import { NestExpressApplication } from '@nestjs/platform-express';
@@ -21,6 +22,8 @@ async function bootstrap() {
     methods: ['GET', 'HEAD', 'PUT', 'PATCH', 'POST', 'DELETE', 'OPTIONS'],
     credentials: true,
   });
+
+  app.use(helmet());
 
   const profile = app.get(ConfigService).get<string>('profile');
   if (['dev', 'development'].includes(profile)) {
