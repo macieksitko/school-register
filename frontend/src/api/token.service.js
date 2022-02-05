@@ -1,5 +1,3 @@
-import jwt_decode from 'jwt-decode';
-
 const getLocalAccessToken = () => {
     const user = JSON.parse(localStorage.getItem("user"));
     return user?.access_token;
@@ -15,9 +13,8 @@ const getUser = () => {
     return JSON.parse(localStorage.getItem("user"));
 };
 
-const setUser = ({ access_token }) => {
-    const jwtPayload = jwt_decode(access_token);
-    localStorage.setItem("user", JSON.stringify({ access_token, user: jwtPayload }));
+const setUser = (user) => {
+    localStorage.setItem("user", JSON.stringify(user));
 };
 
 const removeUser = () => {

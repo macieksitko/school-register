@@ -1,3 +1,5 @@
+import jwt_decode from 'jwt-decode';
+
 import api from "./api";
 import TokenService from "./token.service";
 
@@ -9,10 +11,14 @@ export class AuthService {
                 password: password
             })
             .then(response => {
-                if (response.data.access_token) {
-                    TokenService.setUser(response.data);
+                const jwtPayload = response.data?.access_token ? jwt_decode(response.data.access_token) : '';
+                if (jwtPayload) {
+                    TokenService.setUser({...response.data, user: jwtPayload});
                 }
-                return response.data;
+                return {
+                    ...response.data,
+                    user: jwtPayload
+                };
             })
             .catch((response) => {
                 console.log(response);
