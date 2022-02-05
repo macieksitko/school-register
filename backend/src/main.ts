@@ -4,18 +4,21 @@ import { NestFactory } from '@nestjs/core';
 import { AppModule } from './app.module';
 import swaggerBootstrap from './bootstraps/swagger.bootstrap';
 import { NestExpressApplication } from '@nestjs/platform-express';
+import { AppConfig } from './config/configuration';
 
 async function bootstrap() {
   const app = await NestFactory.create<NestExpressApplication>(AppModule);
-  const serverPort = app.get(ConfigService).get<number>('server.port');
+  const { port, corsOrigins } = app
+    .get(ConfigService)
+    .get<AppConfig['server']>('server');
   app.setGlobalPrefix('api', {
     exclude: ['/auth/login'],
   });
 
   app.useGlobalPipes(new ValidationPipe());
   app.enableCors({
-    origin: true,
-    methods: 'GET,HEAD,PUT,PATCH,POST,DELETE,OPTIONS',
+    origin: corsOrigins,
+    methods: ['GET', 'HEAD', 'PUT', 'PATCH', 'POST', 'DELETE', 'OPTIONS'],
     credentials: true,
   });
 
@@ -24,7 +27,7 @@ async function bootstrap() {
     swaggerBootstrap(app);
   }
 
-  await app.listen(serverPort);
+  await app.listen(port);
   const serverUrl = await app.getUrl();
   new Logger('ServerBootstrap').log(`Server listening on ${serverUrl}`);
 }

@@ -1,7 +1,8 @@
-interface AppConfig {
+export interface AppConfig {
   profile: string;
   server: {
     port: number;
+    corsOrigins: string | boolean;
   };
   database: {
     prefix: string;
@@ -22,6 +23,7 @@ const getConfig = (): AppConfig => ({
   profile: process.env.NODE_ENV || 'dev',
   server: {
     port: parseInt(process.env.PORT, 10) || 3000,
+    corsOrigins: process.env.CORS_ORIGINS || true,
   },
   database: {
     prefix: process.env.DB_PREFIX || 'mongodb',
