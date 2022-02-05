@@ -4,10 +4,7 @@ import {
   UnauthorizedException,
 } from '@nestjs/common';
 import { InjectModel } from '@nestjs/mongoose';
-import * as mongoose from 'mongoose';
 import { Model } from 'mongoose';
-import { NotFoundError } from 'rxjs';
-import { CurrentAccount } from 'src/common/interfaces';
 import {
   Course,
   CourseDocument,

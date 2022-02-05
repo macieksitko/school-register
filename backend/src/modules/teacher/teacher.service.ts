@@ -13,19 +13,6 @@ export class TeacherService {
     private readonly subjectModel: Model<TeacherDocument>,
   ) {}
 
-  // async create(
-  //   createTeacherDto: CreateTeacherDto,
-  //   currentAccount: User,
-  // ): Promise<Teacher> {
-  //   const teacher: Teacher = {
-  //     ...createTeacherDto,
-  //     creationDate: new Date(),
-  //     createdBy: currentAccount.name,
-  //   };
-  //   const createdTeacher = await this.teacherModel.create(teacher);
-  //   return createdTeacher;
-  // }
-
   async findOne(teacherId: string): Promise<Teacher | undefined> {
     return this.teacherModel.findById(teacherId).populate('subjects');
   }

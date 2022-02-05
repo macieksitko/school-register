@@ -4,7 +4,6 @@ import { Logger, Module } from '@nestjs/common';
 import { ConfigModule, ConfigService } from '@nestjs/config';
 import { MongooseModule } from '@nestjs/mongoose';
 import { AppController } from './app.controller';
-import { AppService } from './app.service';
 
 import { getConfig, AppConfig } from './config/configuration';
 import { UsersModule } from './modules/users/users.module';
@@ -50,7 +49,6 @@ import { ReportsModule } from './modules/reports/reports.module';
   ],
   controllers: [AppController],
   providers: [
-    AppService,
     {
       provide: APP_GUARD,
       useClass: JwtAuthGuard,

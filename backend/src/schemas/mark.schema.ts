@@ -2,7 +2,7 @@ import { Prop, Schema, SchemaFactory } from '@nestjs/mongoose';
 import * as mongoose from 'mongoose';
 import { Document } from 'mongoose';
 import { MarkType } from 'src/common/enums';
-import { Student, Subject, Teacher, TeacherSchema } from '.';
+import { Subject, Teacher } from '.';
 
 export type MarkDocument = Mark & Document;
 

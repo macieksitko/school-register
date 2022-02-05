@@ -7,7 +7,6 @@ import {
   Post,
   Res,
   StreamableFile,
-  UnauthorizedException,
 } from '@nestjs/common';
 import { ApiBearerAuth, ApiBody, ApiTags } from '@nestjs/swagger';
 import { createReadStream, existsSync } from 'fs';
@@ -29,7 +28,7 @@ export class ReportsController {
 
   @Roles(Role.Teacher)
   @Post('/download')
-  public getReportStatus(
+  public getReportFile(
     @Body() { reportPath }: { reportPath: string },
     @Res({ passthrough: true }) response,
   ): StreamableFile {

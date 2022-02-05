@@ -6,7 +6,6 @@ import { ApiBearerAuth, ApiTags } from '@nestjs/swagger';
 import { CurrentAccount } from 'src/auth/decorators/current-account.decorator';
 import { Roles } from 'src/auth/decorators/roles.decorator';
 import { Role } from 'src/auth/roles/role.enum';
-import { UserDocument } from 'src/schemas';
 import {
   AddStudentMarkDto,
   AssignStudentToCourseDto,
