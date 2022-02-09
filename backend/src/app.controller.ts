@@ -19,7 +19,7 @@ export class AppController {
   constructor(private authService: AuthService) {}
 
   @Public()
-  @UseGuards(LocalAuthGuard, ThrottlerGuard)
+  @UseGuards(ThrottlerGuard, LocalAuthGuard)
   @Post('login')
   async login(@Request() req) {
     return await this.authService.login(req.user);

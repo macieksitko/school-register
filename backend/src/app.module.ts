@@ -48,7 +48,7 @@ import { ThrottlerModule } from '@nestjs/throttler';
     AuthModule,
     ReportsModule,
     ThrottlerModule.forRoot({
-      ttl: 60,
+      ttl: 15 * 60,
       limit: 10,
     }),
   ],
