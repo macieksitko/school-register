@@ -9,6 +9,7 @@ import { AppConfig } from './config/configuration';
 
 async function bootstrap() {
   const app = await NestFactory.create<NestExpressApplication>(AppModule);
+  app.set('trust proxy', true);
   const { port, corsOrigins } = app
     .get(ConfigService)
     .get<AppConfig['server']>('server');
