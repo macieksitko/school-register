@@ -1,5 +1,6 @@
 import { Controller, Post, Request, UseGuards } from '@nestjs/common';
 import { ApiBearerAuth, ApiProperty } from '@nestjs/swagger';
+import { ThrottlerGuard } from '@nestjs/throttler';
 import { AuthService } from './auth/auth.service';
 import { Public } from './auth/decorators/public.decorator';
 import { LocalAuthGuard } from './auth/guards/local.guard';
@@ -18,7 +19,7 @@ export class AppController {
   constructor(private authService: AuthService) {}
 
   @Public()
-  @UseGuards(LocalAuthGuard)
+  @UseGuards(LocalAuthGuard, ThrottlerGuard)
   @Post('login')
   async login(@Request() req) {
     return await this.authService.login(req.user);

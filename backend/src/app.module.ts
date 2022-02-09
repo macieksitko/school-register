@@ -15,6 +15,7 @@ import { RolesGuard } from './auth/guards/roles.guard';
 import { SubjectModule } from './modules/subject/subject.module';
 import { CourseModule } from './modules/course/course.module';
 import { ReportsModule } from './modules/reports/reports.module';
+import { ThrottlerModule } from '@nestjs/throttler';
 
 @Module({
   imports: [
@@ -46,6 +47,10 @@ import { ReportsModule } from './modules/reports/reports.module';
     PasswordModule,
     AuthModule,
     ReportsModule,
+    ThrottlerModule.forRoot({
+      ttl: 60,
+      limit: 10,
+    }),
   ],
   controllers: [AppController],
   providers: [
